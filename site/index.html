@@ -106,8 +106,7 @@
   @media (min-width:640px){ .cols-2{ grid-template-columns: 1fr 1fr; } .cols-2 .row{ break-inside: avoid; } }
 
   /* stat row */
-  .stats{ display:grid; grid-template-columns: repeat(2,1fr); gap: 28px 32px; max-width:640px; }
-  @media (min-width:560px){ .stats{ grid-template-columns: repeat(4,1fr); } }
+  .stats{ display:grid; grid-template-columns: repeat(2,1fr); gap: 28px 32px; max-width:420px; }
   .stat-num{ font-family:'Archivo',sans-serif; font-weight:800; font-size:1.9rem; color: var(--gold-soft); }
   .stat-label{ font-size:.83rem; color: rgba(247,242,231,.55); margin-top:5px; line-height:1.4; }
 
@@ -219,7 +218,7 @@
         <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 2.003c-5.514 0-9.997 4.483-9.997 9.997 0 1.762.462 3.48 1.34 4.997L2 22l5.132-1.345a9.96 9.96 0 0 0 4.872 1.242h.004c5.514 0 9.997-4.483 9.997-9.997 0-2.671-1.04-5.182-2.929-7.072a9.937 9.937 0 0 0-7.072-2.925zm0 18.187h-.003a8.184 8.184 0 0 1-4.17-1.143l-.299-.177-3.046.799.813-2.97-.194-.305a8.173 8.173 0 0 1-1.256-4.394c0-4.523 3.68-8.203 8.206-8.203a8.15 8.15 0 0 1 5.8 2.406 8.15 8.15 0 0 1 2.4 5.802c-.001 4.524-3.681 8.205-8.251 8.205z"/></svg>
         Falar com a Advisory no WhatsApp
       </a>
-      <p style="font-size:.86rem;color:rgba(247,242,231,.5);max-width:230px;margin:0;">Resposta em até <strong style="color:var(--gold-soft);">5 horas úteis</strong>. Sem compromisso.</p>
+      <p style="font-size:.86rem;color:rgba(247,242,231,.5);max-width:230px;margin:0;">Sem compromisso.</p>
     </div>
 
     <div class="reveal stats" style="margin-top:76px;padding-top:36px;border-top:1px solid var(--line-on-navy);">
@@ -230,14 +229,6 @@
       <div>
         <p class="stat-num">52%</p>
         <p class="stat-label">rotatividade média de analistas fiscais / ano</p>
-      </div>
-      <div>
-        <p class="stat-num">5h</p>
-        <p class="stat-label">tempo máximo de resposta útil</p>
-      </div>
-      <div>
-        <p class="stat-num">2026</p>
-        <p class="stat-label">Reforma Tributária (CBS/IBS) chegando</p>
       </div>
     </div>
   </div>
@@ -338,18 +329,11 @@
           <p class="txt-desc">Não é uma pessoa só cuidando de tudo. É um time dedicado a apurações e obrigações fiscais, com backup e continuidade garantidos.</p>
         </div>
       </div>
-      <div class="row">
-        <span class="mark">✓</span>
-        <div>
-          <p class="txt-title">Suporte ágil</p>
-          <p class="txt-desc">WhatsApp, ligação ou e-mail, com resposta em até <strong style="color:var(--ink);">5 horas úteis</strong>. Você nunca fica sem retorno na hora que mais precisa.</p>
-        </div>
-      </div>
       <div class="row" style="border-bottom:none;">
         <span class="mark">✓</span>
         <div>
-          <p class="txt-title">Pronto para a Reforma Tributária</p>
-          <p class="txt-desc">Ajudamos o escritório a se preparar para o CBS/IBS, com prazos apertando a partir de <strong style="color:var(--ink);">setembro de 2026</strong>.</p>
+          <p class="txt-title">Suporte direto</p>
+          <p class="txt-desc">WhatsApp, ligação ou e-mail, direto com quem cuida do fiscal dos seus clientes. Você nunca fica sem retorno na hora que mais precisa.</p>
         </div>
       </div>
     </div>
@@ -383,7 +367,7 @@
       <div class="step">
         <div class="step-num">4</div>
         <h3>Suporte contínuo</h3>
-        <p>WhatsApp, ligação ou e-mail, com resposta em até 5 horas úteis.</p>
+        <p>WhatsApp, ligação ou e-mail, direto com o time que cuida do seu fiscal.</p>
       </div>
     </div>
   </div>
@@ -479,16 +463,16 @@
 <!-- ============ CTA FINAL ============ -->
 <section class="on-navy" style="background:var(--navy-deep);color:var(--cream);">
   <div class="wrap reveal" style="text-align:center;max-width:740px;margin:0 auto;">
-    <h2 style="font-size:clamp(1.8rem,4vw,2.9rem);">Prepare o Departamento Fiscal do seu escritório antes que a mudança chegue.</h2>
+    <h2 style="font-size:clamp(1.8rem,4vw,2.9rem);">Tire o fiscal dos seus clientes das suas costas, sem perder o controle da carteira.</h2>
     <p style="font-size:1.08rem;line-height:1.7;color:rgba(247,242,231,.65);margin:22px auto 0;max-width:540px;">
-      Quanto antes o fiscal do seu escritório estiver nas mãos de um time dedicado, menor o risco de multa, retrabalho e perda de clientes na transição da Reforma Tributária.
+      Quanto antes o fiscal do seu escritório estiver nas mãos de um time dedicado, menor o risco de multa, retrabalho e desgaste com os seus clientes.
     </p>
     <div style="margin-top:38px;">
-      <a class="btn" style="padding:18px 32px;font-size:1.02rem;" href="https://wa.me/5562981415167?text=Ol%C3%A1!%20Quero%20preparar%20o%20Departamento%20Fiscal%20do%20meu%20escrit%C3%B3rio%20para%20a%20Reforma%20Tribut%C3%A1ria%20e%20terceirizar%20com%20a%20Advisory." target="_blank" rel="noopener">
+      <a class="btn" style="padding:18px 32px;font-size:1.02rem;" href="https://wa.me/5562981415167?text=Ol%C3%A1!%20Quero%20terceirizar%20o%20Departamento%20Fiscal%20do%20meu%20escrit%C3%B3rio%20com%20a%20Advisory." target="_blank" rel="noopener">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 2.003c-5.514 0-9.997 4.483-9.997 9.997 0 1.762.462 3.48 1.34 4.997L2 22l5.132-1.345a9.96 9.96 0 0 0 4.872 1.242h.004c5.514 0 9.997-4.483 9.997-9.997 0-2.671-1.04-5.182-2.929-7.072a9.937 9.937 0 0 0-7.072-2.925zm0 18.187h-.003a8.184 8.184 0 0 1-4.17-1.143l-.299-.177-3.046.799.813-2.97-.194-.305a8.173 8.173 0 0 1-1.256-4.394c0-4.523 3.68-8.203 8.206-8.203a8.15 8.15 0 0 1 5.8 2.406 8.15 8.15 0 0 1 2.4 5.802c-.001 4.524-3.681 8.205-8.251 8.205z"/></svg>
         Falar agora com a Advisory
       </a>
-      <p style="margin-top:16px;font-size:.85rem;color:rgba(247,242,231,.4);">Sem compromisso &middot; resposta em até 5 horas úteis</p>
+      <p style="margin-top:16px;font-size:.85rem;color:rgba(247,242,231,.4);">Sem compromisso</p>
     </div>
   </div>
 </section>
