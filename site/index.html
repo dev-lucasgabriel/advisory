@@ -22,7 +22,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,600;0,700;0,800;0,900;1,700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300..700&family=Lexend+Giga:wght@300..600&display=swap" rel="stylesheet">
 
 <style>
   :root{
@@ -76,7 +76,7 @@
     margin:0;
     background: var(--mist);
     color: var(--ink);
-    font-family: 'Inter', sans-serif;
+    font-family: 'Lexend', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -84,19 +84,19 @@
   a{ color:inherit; }
 
   h1,h2,h3,.font-display{
-    font-family: 'Archivo', sans-serif;
-    font-weight: 800;
-    letter-spacing: -0.015em;
+    font-family: 'Lexend', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.03em;
     text-wrap: balance;
     margin: 0;
     line-height: 1.12;
   }
-  .font-serif{ font-family: 'Playfair Display', serif; }
+  .font-wide{ font-family:'Lexend Giga', sans-serif; }
   .eyebrow{
-    font-family:'Inter',sans-serif;
-    font-weight:700;
-    font-size:.74rem;
-    letter-spacing:.2em;
+    font-family:'Lexend Giga',sans-serif;
+    font-weight:500;
+    font-size:.66rem;
+    letter-spacing:.12em;
     text-transform:uppercase;
     margin:0 0 14px;
   }
@@ -110,11 +110,14 @@
   .lede{ font-size:1.06rem; line-height:1.75; color: var(--ink-soft); max-width: 620px; }
   section.on-navy .lede{ color: rgba(var(--on-surface-rgb),.7); }
   .head .lede{ margin:18px auto 0; }
+  body{ font-weight:350; }
+  strong{ font-weight:600; }
   .head-left .lede{ margin:18px 0 0; }
 
   /* heading block: accent rule + eyebrow + title, consistent across sections */
   .head{ max-width: 640px; margin:0 auto 56px; text-align:center; }
-  .head::before{ content:''; display:block; width:52px; height:3px; margin:0 auto 22px; background: var(--steel); border-radius:2px; }
+  .head::before{ content:''; display:block; width:26px; height:18px; margin:0 auto 22px; background: var(--steel); clip-path: polygon(50% 0,100% 100%,72% 100%,50% 52%,28% 100%,0 100%); }
+  section.on-navy .head::before{ background: var(--accent-text); }
   .head h2{ font-size: clamp(1.65rem, 3.4vw, 2.5rem); }
   .head .eyebrow{ justify-content:center; }
   .head.head-left{ margin-left:0; text-align:left; }
@@ -122,7 +125,7 @@
 
   .btn{
     display:inline-flex; align-items:center; gap:10px;
-    font-family:'Archivo', sans-serif; font-weight:800; font-size:.98rem;
+    font-family:'Lexend', sans-serif; font-weight:600; font-size:.98rem;
     padding: 16px 30px; border-radius:8px;
     background: var(--steel);
     color: #fff;
@@ -184,7 +187,7 @@
     transition: --pct 1.4s cubic-bezier(.2,.7,.3,1);
   }
   .stat-ring::before{ content:''; position:absolute; inset:12px; border-radius:50%; background:#fff; }
-  .stat-ring-num{ position:relative; z-index:1; font-family:'Archivo',sans-serif; font-weight:800; font-size:2rem; color:var(--navy); font-variant-numeric: tabular-nums; }
+  .stat-ring-num{ position:relative; z-index:1; font-family:'Lexend',sans-serif; font-weight:600; font-size:2rem; color:var(--navy); font-variant-numeric: tabular-nums; }
 
   /* marquee ticker (react-bits LogoLoop style, text tokens) */
   .marquee{
@@ -194,7 +197,7 @@
   }
   .marquee-track{ display:flex; width:max-content; animation: marquee-scroll 30s linear infinite; }
   .marquee-track span{
-    font-family:'Archivo',sans-serif; font-weight:700; font-size:.85rem; letter-spacing:.05em;
+    font-family:'Lexend',sans-serif; font-weight:700; font-size:.85rem; letter-spacing:.05em;
     color: rgba(var(--on-surface-rgb),.4); padding:0 26px; white-space:nowrap; position:relative;
   }
   .marquee-track span::after{ content:'◆'; position:absolute; right:-3px; top:50%; transform:translateY(-50%); color:var(--accent-text); font-size:.4rem; }
@@ -203,7 +206,7 @@
 
   /* stat row */
   .stats{ display:grid; grid-template-columns: repeat(2,1fr); gap: 28px 32px; max-width:420px; }
-  .stat-num{ font-family:'Archivo',sans-serif; font-weight:800; font-size:1.9rem; color: var(--accent-strong); font-variant-numeric: tabular-nums; }
+  .stat-num{ font-family:'Lexend',sans-serif; font-weight:600; font-size:1.9rem; color: var(--accent-strong); font-variant-numeric: tabular-nums; }
   .stat-label{ font-size:.83rem; color: rgba(var(--on-surface-rgb),.55); margin-top:5px; line-height:1.4; }
 
   /* hero orbit visual */
@@ -222,7 +225,7 @@
   .orbit-chip{
     position:absolute; transform:translate(-50%,-50%);
     background: var(--navy-deep); border:1px solid rgba(var(--glow-rgb),.35); color: var(--steel-soft);
-    font-family:'Inter',sans-serif; font-weight:600; font-size:.72rem; letter-spacing:.03em;
+    font-family:'Lexend',sans-serif; font-weight:600; font-size:.72rem; letter-spacing:.03em;
     padding:8px 14px; border-radius:999px; white-space:nowrap;
     animation: float-chip 5s ease-in-out infinite;
   }
@@ -234,12 +237,15 @@
   /* process steps */
   .steps{ display:grid; grid-template-columns: 1fr; gap: 40px; counter-reset: step; }
   @media (min-width:860px){ .steps{ grid-template-columns: repeat(4,1fr); gap:28px; } }
-  .step{ position:relative; padding-top: 54px; }
+  .step{ position:relative; padding-top: 104px; }
   .step-num{
-    position:absolute; top:0; left:0; width:40px; height:40px; border-radius:50%;
-    background: var(--steel); color: #fff;
-    display:flex; align-items:center; justify-content:center;
-    font-family:'Archivo',sans-serif; font-weight:800; font-size:1rem;
+    position:absolute; top:0; left:-2px;
+    font-family:'Lexend',sans-serif; font-weight:300; font-size:4.2rem; line-height:1; letter-spacing:-0.05em;
+    color: transparent; -webkit-text-stroke: 1px rgba(var(--glow-rgb),.7);
+  }
+  .step::before{
+    content:''; position:absolute; left:0; top:84px; width:9px; height:9px; border-radius:50%;
+    background: var(--steel-soft); box-shadow: 0 0 0 5px rgba(var(--glow-rgb),.14);
   }
   .step h3{ font-size:1.08rem; margin: 0 0 8px; }
   .step p{ color: rgba(var(--on-surface-rgb),.6); margin:0; font-size:.95rem; line-height:1.6; }
@@ -247,7 +253,7 @@
   @media (min-width:860px){
     .steps{ position:relative; }
     .steps::before{
-      content:''; position:absolute; top:20px; left: calc(12.5% ); right: calc(12.5%);
+      content:''; position:absolute; top:88px; left:0; right:0;
       height:1px; background: linear-gradient(90deg, var(--steel), rgba(var(--glow-rgb),.15));
       transform: scaleX(0); transform-origin:left; transition: transform 1.2s cubic-bezier(.3,.8,.4,1) .2s;
     }
@@ -277,19 +283,19 @@
     background: linear-gradient(135deg, #D7E4E7, var(--steel-soft));
     color: var(--navy-deep); border-radius:12px; padding: 32px;
   }
-  .callout p:first-child{ font-family:'Archivo',sans-serif; font-weight:800; font-size:1.2rem; margin:0; }
+  .callout p:first-child{ font-family:'Lexend',sans-serif; font-weight:600; font-size:1.2rem; margin:0; }
   .callout p.body{ margin:12px 0 0; line-height:1.6; font-weight:500; }
   .callout a{
     margin-top:20px; display:inline-flex; align-items:center; gap:8px;
     background: var(--navy-deep); color: var(--steel-soft);
-    font-family:'Archivo',sans-serif; font-weight:800; font-size:.9rem;
+    font-family:'Lexend',sans-serif; font-weight:600; font-size:.9rem;
     padding:14px 22px; border-radius:8px; text-decoration:none;
   }
 
   .quote{
     background: var(--surface-1); color: var(--on-surface); border-radius:12px; padding: 36px 40px; margin-top:36px;
   }
-  .quote p{ font-family:'Playfair Display',serif; font-style:italic; font-weight:500; font-size:1.35rem; line-height:1.55; margin:0; }
+  .quote p{ font-family:'Lexend',sans-serif; font-weight:300; font-size:1.3rem; line-height:1.6; margin:0; }
   .quote cite{ display:block; margin-top:18px; font-style:normal; }
 
   /* two-column alternating layout */
@@ -314,7 +320,7 @@
     animation: pulse-ring 3s ease-in-out infinite;
   }
   @media (prefers-reduced-motion: reduce){ .spot-ring{ animation:none; } }
-  .spot-statement{ font-family:'Archivo',sans-serif; font-weight:800; font-size:2rem; margin:10px 0 0; }
+  .spot-statement{ font-family:'Lexend',sans-serif; font-weight:600; font-size:2rem; margin:10px 0 0; }
 
   .shine-text{
     background: linear-gradient(100deg, var(--shine-a) 30%, var(--shine-b) 45%, var(--shine-a) 60%);
@@ -395,6 +401,95 @@
   @keyframes intro-name-in{ to{ opacity:1; clip-path: inset(0 0 0 0); } }
   @keyframes intro-out{ to{ opacity:0; visibility:hidden; } }
 
+  /* film grain for depth */
+  body::after{
+    content:''; position:fixed; inset:0; z-index:90; pointer-events:none; opacity:.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* horizon curve: each section's top edge dips like the arc under the logo */
+  section.horizon::before{
+    content:''; position:absolute; left:0; right:0; top:-1px; height:clamp(26px,5vw,70px);
+    background: var(--prev); clip-path: ellipse(72% 100% at 50% 0); pointer-events:none;
+  }
+
+  /* hero sky: glow, faint grid and horizon arcs */
+  .hero{ overflow:hidden; }
+  .hero > .wrap{ position:relative; z-index:1; }
+  .hero-sky{ position:absolute; inset:0; pointer-events:none; }
+  .hero-sky::before{
+    content:''; position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 55% 60% at 80% 28%, rgba(var(--glow-rgb),.16), transparent 70%),
+      radial-gradient(ellipse 40% 40% at 10% 90%, rgba(var(--glow-rgb),.07), transparent 70%);
+  }
+  .hero-sky::after{
+    content:''; position:absolute; inset:0;
+    background-image: linear-gradient(rgba(var(--on-surface-rgb),.045) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--on-surface-rgb),.045) 1px, transparent 1px);
+    background-size: 72px 72px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 70% 30%, #000, transparent 75%);
+    mask-image: radial-gradient(ellipse 70% 60% at 70% 30%, #000, transparent 75%);
+  }
+  .hero-horizon{ position:absolute; left:-5%; bottom:0; width:110%; height:160px; }
+  .hero-horizon path{ fill:none; stroke: rgba(var(--glow-rgb),.35); stroke-width:1.2; vector-effect: non-scaling-stroke; }
+  .hero-horizon path + path{ stroke: rgba(var(--glow-rgb),.16); }
+
+  /* lighthouse beam sweeping behind the hero mark */
+  .beam{
+    position:absolute; inset:-55%; z-index:0; border-radius:50%;
+    background: conic-gradient(from 0deg, rgba(var(--glow-rgb),.32) 0deg, rgba(var(--glow-rgb),.08) 22deg, transparent 40deg, transparent 360deg);
+    -webkit-mask-image: radial-gradient(circle, #000 18%, transparent 62%);
+    mask-image: radial-gradient(circle, #000 18%, transparent 62%);
+    animation: spin-border 9s linear infinite;
+  }
+  .hero-visual .orbit-ring, .hero-visual .orbit-core, .hero-visual .orbit-chip{ z-index:1; }
+  @media (prefers-reduced-motion: reduce){ .beam{ animation:none; } }
+
+  /* hero stat meters */
+  .meter{ height:3px; margin-top:12px; border-radius:3px; background: rgba(var(--on-surface-rgb),.12); overflow:hidden; }
+  .meter i{ display:block; height:100%; width:0; border-radius:inherit; background: linear-gradient(90deg, var(--steel), var(--steel-soft)); transition: width 1.4s cubic-bezier(.2,.7,.3,1) .15s; }
+  .reveal.in .meter i{ width: var(--w); }
+
+  /* 100-mark grid: each cell is the logo's A */
+  .stat-big{ display:block; font-family:'Lexend',sans-serif; font-weight:600; font-size:3.4rem; line-height:1; color: var(--navy); letter-spacing:-0.04em; font-variant-numeric: tabular-nums; margin-top:6px; }
+  .mark-grid{ display:grid; grid-template-columns: repeat(10,1fr); gap:8px 9px; max-width:300px; margin:28px auto 16px; }
+  .mark-grid i{
+    aspect-ratio: 1.15; background: rgba(16,38,58,.13); clip-path: polygon(50% 0,100% 100%,72% 100%,50% 52%,28% 100%,0 100%);
+    transform: translateY(4px); transition: background .35s ease, transform .35s ease;
+  }
+  .reveal.in .mark-grid i.on{ background: var(--steel); transform:none; }
+  .mark-legend{ display:flex; justify-content:center; gap:20px; font-size:.78rem; color: var(--ink-soft); margin:0 0 18px; }
+  .mark-legend span{ display:inline-flex; align-items:center; gap:7px; }
+  .mark-legend i{ width:11px; height:10px; background: rgba(16,38,58,.14); clip-path: polygon(50% 0,100% 100%,72% 100%,50% 52%,28% 100%,0 100%); }
+  .mark-legend i.on{ background: var(--steel); }
+
+  /* services as a numbered tile grid */
+  .svc-grid{
+    display:grid; grid-template-columns:1fr; gap:1px; border-radius:18px; overflow:hidden;
+    background: var(--line-on-navy); border:1px solid var(--line-on-navy);
+  }
+  @media (min-width:640px){ .svc-grid{ grid-template-columns: repeat(2,1fr); } }
+  @media (min-width:960px){ .svc-grid{ grid-template-columns: repeat(3,1fr); } }
+  .svc{
+    position:relative; display:flex; flex-direction:column; justify-content:space-between; gap:22px;
+    min-height:132px; padding:24px 26px; background: var(--surface-1); transition: background .25s ease;
+  }
+  .svc:hover{ background: linear-gradient(rgba(var(--glow-rgb),.08), rgba(var(--glow-rgb),.08)), var(--surface-1); }
+  .svc-n{ font-family:'Lexend Giga',sans-serif; font-size:.7rem; letter-spacing:.1em; color: var(--accent-text); }
+  .svc-t{ font-weight:500; font-size:1.08rem; line-height:1.35; color: var(--on-surface); }
+  .svc::after{
+    content:''; position:absolute; right:24px; top:26px; width:12px; height:9px; background: var(--accent-text); opacity:.35;
+    clip-path: polygon(50% 0,100% 100%,72% 100%,50% 52%,28% 100%,0 100%); transition: opacity .25s ease, transform .25s ease;
+  }
+  .svc:hover::after{ opacity:1; transform: translateY(-3px); }
+  @media (max-width:639px){
+    .svc{ flex-direction:row; align-items:center; gap:16px; min-height:0; padding:18px 20px; }
+    .svc::after{ display:none; }
+  }
+
+  /* footer watermark */
+  .footer-mark{ width:min(1080px,90%); height:auto; margin:56px auto 0; opacity:.07; }
+
   ::selection{ background: var(--steel); color: #fff; }
 </style>
 </head>
@@ -443,7 +538,10 @@
 </header>
 
 <!-- ============ HERO ============ -->
-<section class="on-navy" style="background:var(--surface-1);color:var(--on-surface);padding:172px 0 96px;">
+<section class="on-navy hero" style="background:var(--surface-1);color:var(--on-surface);padding:172px 0 150px;">
+  <div class="hero-sky" aria-hidden="true">
+    <svg class="hero-horizon" viewBox="0 0 1440 160" preserveAspectRatio="none"><path d="M0 160 Q720 10 1440 160"/><path d="M0 160 Q720 70 1440 160"/></svg>
+  </div>
   <div class="wrap two-col" style="align-items:start;">
   <div>
     <div style="display:flex;align-items:center;gap:14px;margin-bottom:28px;" class="reveal">
@@ -454,7 +552,7 @@
 
     <h1 class="reveal word-reveal" style="font-size:clamp(2.2rem,5vw,3.6rem);max-width:800px;">
       <span class="word"><span class="word-inner">Terceirização</span></span> <span class="word"><span class="word-inner">do</span></span> <span class="word"><span class="word-inner">Departamento</span></span> <span class="word"><span class="word-inner">Fiscal</span></span> <span class="word"><span class="word-inner">para</span></span> <span class="word"><span class="word-inner">contadores.</span></span>
-      <span class="font-serif" style="display:block;font-weight:600;font-style:italic;color:var(--accent-strong);font-size:.6em;margin-top:16px;letter-spacing:0;">No prazo. Sem multa.</span>
+      <span class="font-wide" style="display:block;font-weight:300;color:var(--accent-strong);font-size:.36em;margin-top:22px;letter-spacing:.14em;text-transform:uppercase;">No prazo. Sem multa.</span>
     </h1>
 
     <p class="reveal lede" style="font-size:1.14rem;margin-top:26px;">
@@ -474,16 +572,19 @@
     <div class="reveal stats" style="margin-top:76px;padding-top:36px;border-top:1px solid var(--line-on-navy);">
       <div>
         <p class="stat-num" data-countup="100" data-suffix="%">0%</p>
+        <div class="meter"><i style="--w:100%"></i></div>
         <p class="stat-label">da carteira sob seu controle</p>
       </div>
       <div>
         <p class="stat-num" data-countup="52" data-suffix="%">0%</p>
+        <div class="meter"><i style="--w:52%"></i></div>
         <p class="stat-label">rotatividade média de analistas fiscais / ano</p>
       </div>
     </div>
   </div>
 
   <div class="reveal hero-visual" aria-hidden="true">
+    <div class="beam"></div>
     <div class="orbit-ring r1"></div>
     <div class="orbit-ring r2"></div>
     <div class="orbit-core">
@@ -497,7 +598,7 @@
 </section>
 
 <!-- ============ QUEM É A ATALAIA ============ -->
-<section id="quem-somos" style="background:var(--mist);">
+<section id="quem-somos" class="horizon" style="background:var(--mist);--prev:var(--surface-1);">
   <div class="wrap two-col">
     <div class="reveal">
       <div class="head head-left" style="margin-bottom:26px;">
@@ -532,7 +633,7 @@
 </section>
 
 <!-- ============ SERVIÇOS / ENTREGAS ============ -->
-<section id="servicos" class="on-navy" style="background:var(--surface-1);color:var(--on-surface);">
+<section id="servicos" class="on-navy horizon" style="--prev:var(--mist);background:var(--surface-1);color:var(--on-surface);">
   <div class="wrap">
     <div class="head reveal">
       <p class="eyebrow" style="color:var(--accent-text);">O que entregamos</p>
@@ -540,23 +641,19 @@
       <p class="lede" style="margin-top:18px;">Tudo dentro do prazo e sob responsabilidade técnica de um time dedicado às apurações e obrigações acessórias do seu escritório.</p>
     </div>
 
-    <div class="reveal cols-2 rows">
-      <div>
-        <div class="row"><span class="mark">✓</span><span class="txt-title">Apuração Simples Nacional</span></div>
-        <div class="row"><span class="mark">✓</span><span class="txt-title">Apuração PGDAS</span></div>
-        <div class="row"><span class="mark">✓</span><span class="txt-title">Declaração SEDIF</span></div>
-        <div class="row"><span class="mark">✓</span><span class="txt-title">Retenções federais mensais</span></div>
-        <div class="row"><span class="mark">✓</span><span class="txt-title">EFD-REINF (mensal)</span></div>
-        <div class="row" style="border-bottom:none;"><span class="mark">✓</span><span class="txt-title">EFD-Contribuições (mensal)</span></div>
-      </div>
-      <div>
-        <div class="row"><span class="mark">✓</span><span class="txt-title">Apuração fiscal Lucro Presumido</span></div>
-        <div class="row"><span class="mark">✓</span><span class="txt-title">Diferencial de alíquota (DIFAL)</span></div>
-        <div class="row"><span class="mark">✓</span><span class="txt-title">Elaboração DEFIS</span></div>
-        <div class="row"><span class="mark">✓</span><span class="txt-title">Declaração de ISSQN</span></div>
-        <div class="row"><span class="mark">✓</span><span class="txt-title">Elaboração mensal DCTF</span></div>
-        <div class="row" style="border-bottom:none;"><span class="mark">✓</span><span class="txt-title">Elaboração anual ECF</span></div>
-      </div>
+    <div class="reveal svc-grid">
+      <div class="svc"><span class="svc-n">01</span><span class="svc-t">Apuração Simples Nacional</span></div>
+      <div class="svc"><span class="svc-n">02</span><span class="svc-t">Apuração PGDAS</span></div>
+      <div class="svc"><span class="svc-n">03</span><span class="svc-t">Declaração SEDIF</span></div>
+      <div class="svc"><span class="svc-n">04</span><span class="svc-t">Retenções federais mensais</span></div>
+      <div class="svc"><span class="svc-n">05</span><span class="svc-t">EFD-REINF (mensal)</span></div>
+      <div class="svc"><span class="svc-n">06</span><span class="svc-t">EFD-Contribuições (mensal)</span></div>
+      <div class="svc"><span class="svc-n">07</span><span class="svc-t">Apuração fiscal Lucro Presumido</span></div>
+      <div class="svc"><span class="svc-n">08</span><span class="svc-t">Diferencial de alíquota (DIFAL)</span></div>
+      <div class="svc"><span class="svc-n">09</span><span class="svc-t">Elaboração DEFIS</span></div>
+      <div class="svc"><span class="svc-n">10</span><span class="svc-t">Declaração de ISSQN</span></div>
+      <div class="svc"><span class="svc-n">11</span><span class="svc-t">Elaboração mensal DCTF</span></div>
+      <div class="svc"><span class="svc-n">12</span><span class="svc-t">Elaboração anual ECF</span></div>
     </div>
 
     <p class="reveal" style="margin-top:40px;font-size:.9rem;color:rgba(var(--on-surface-rgb),.45);max-width:640px;">
@@ -573,7 +670,7 @@
 </section>
 
 <!-- ============ DIFERENCIAIS ============ -->
-<section id="diferenciais" style="background:var(--mist);">
+<section id="diferenciais" class="horizon" style="background:var(--mist);--prev:var(--surface-1);">
   <div class="wrap">
     <div class="head reveal">
       <p class="eyebrow" style="color:var(--steel-deep);">Por que terceirizar</p>
@@ -613,10 +710,10 @@
       </div>
 
       <div class="reveal stat-ring-card">
-        <div class="stat-ring" data-pct="52" style="--pct:0;">
-          <span class="stat-ring-num" data-countup="52" data-suffix="%">0%</span>
-        </div>
         <p class="eyebrow" style="color:var(--steel-deep);">Rotatividade média ao ano</p>
+        <span class="stat-big" data-countup="52" data-suffix="%">0%</span>
+        <div class="mark-grid" data-fill="52" role="img" aria-label="De cada 100 analistas fiscais, 52 trocam de emprego por ano"></div>
+        <p class="mark-legend"><span><i class="on"></i>saem no ano</span><span><i></i>permanecem</span></p>
         <p style="color:var(--ink-soft);line-height:1.6;margin-top:12px;">Analistas fiscais internos trocam de emprego com frequência. Cada saída significa retreinar alguém do zero, com risco de multa no meio do caminho. Isso deixa de ser problema seu.</p>
       </div>
     </div>
@@ -624,7 +721,7 @@
 </section>
 
 <!-- ============ COMO FUNCIONA ============ -->
-<section id="como-funciona" class="on-navy" style="background:var(--surface-1);color:var(--on-surface);">
+<section id="como-funciona" class="on-navy horizon" style="--prev:var(--mist);background:var(--surface-1);color:var(--on-surface);">
   <div class="wrap">
     <div class="head reveal">
       <p class="eyebrow" style="color:var(--accent-text);">Como funciona</p>
@@ -633,22 +730,22 @@
 
     <div class="reveal steps">
       <div class="step">
-        <div class="step-num">1</div>
+        <div class="step-num">01</div>
         <h3>Usamos o seu sistema</h3>
         <p>Login em sistemas web ou acesso remoto, dentro da sua própria estrutura. Você mantém o controle.</p>
       </div>
       <div class="step">
-        <div class="step-num">2</div>
+        <div class="step-num">02</div>
         <h3>Conferência inicial</h3>
         <p>Revisamos as apurações e obrigações do período assim que assumimos a carteira.</p>
       </div>
       <div class="step">
-        <div class="step-num">3</div>
+        <div class="step-num">03</div>
         <h3>Rotina mensal no prazo</h3>
         <p>Apuramos e transmitimos todas as obrigações dentro do prazo, todos os meses.</p>
       </div>
       <div class="step">
-        <div class="step-num">4</div>
+        <div class="step-num">04</div>
         <h3>Suporte contínuo</h3>
         <p>WhatsApp, ligação ou e-mail, direto com o time que cuida do seu fiscal.</p>
       </div>
@@ -691,7 +788,7 @@
 </style>
 
 <!-- ============ MITOS X VERDADES ============ -->
-<section style="background:var(--mist);">
+<section class="horizon" style="background:var(--mist);--prev:var(--surface-2);">
   <div class="wrap">
     <div class="head reveal">
       <p class="eyebrow" style="color:var(--steel-deep);">Mitos x Verdades</p>
@@ -744,7 +841,7 @@
 </section>
 
 <!-- ============ CTA FINAL ============ -->
-<section class="on-navy" style="background:var(--surface-2);color:var(--on-surface);">
+<section class="on-navy horizon" style="--prev:var(--mist);background:var(--surface-2);color:var(--on-surface);">
   <div class="wrap reveal" style="text-align:center;max-width:740px;margin:0 auto;">
     <h2 style="font-size:clamp(1.8rem,4vw,2.9rem);">Tire o fiscal dos seus clientes das suas costas, sem perder <span class="shine-text">o controle da carteira</span>.</h2>
     <p style="font-size:1.08rem;line-height:1.7;color:rgba(var(--on-surface-rgb),.65);margin:22px auto 0;max-width:540px;">
@@ -761,7 +858,7 @@
 </section>
 
 <!-- ============ FOOTER ============ -->
-<footer style="background:var(--surface-1);color:rgba(var(--on-surface-rgb),.55);padding:48px 0;border-top:1px solid var(--line-on-navy);">
+<footer style="background:var(--surface-1);color:rgba(var(--on-surface-rgb),.55);padding:56px 0 0;overflow:hidden;border-top:1px solid var(--line-on-navy);">
   <div class="wrap" style="display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;justify-content:space-between;">
     <div style="display:flex;align-items:center;gap:12px;">
       <img class="logo-mark for-dark" src="assets/atalaia-icon-light.png" alt="" width="46" height="35">
@@ -782,6 +879,8 @@
       &copy; 2026 Atalaia Assessoria e Gestão Empresarial. Terceirização do Departamento Fiscal para escritórios de contabilidade.
     </p>
   </div>
+  <img class="footer-mark for-dark" src="assets/atalaia-wordmark-light.png" alt="" aria-hidden="true" width="1054" height="150">
+  <img class="footer-mark for-light" src="assets/atalaia-wordmark-dark.png" alt="" aria-hidden="true" width="1054" height="150">
 </footer>
 
 <!-- ============ FLOATING WHATSAPP (mobile) ============ -->
@@ -825,6 +924,15 @@
     if (el.matches && el.matches('[data-countup]')) animateCountUp(el);
     if (el.matches && el.matches('.stat-ring[data-pct]')) el.style.setProperty('--pct', el.getAttribute('data-pct'));
   }
+
+  document.querySelectorAll('.mark-grid').forEach(function(grid){
+    var filled = parseInt(grid.getAttribute('data-fill'), 10) || 0;
+    for (var i = 0; i < 100; i++) {
+      var cell = document.createElement('i');
+      if (i < filled) { cell.className = 'on'; cell.style.transitionDelay = (0.3 + i * 0.018) + 's'; }
+      grid.appendChild(cell);
+    }
+  });
 
   function startReveals(){
   var els = document.querySelectorAll('.reveal');
