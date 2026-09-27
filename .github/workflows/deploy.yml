@@ -1,0 +1,30 @@
+# Publishes site/ to the Vercel project "atalaia-site" (atalaiagestao.com) on every push to main.
+# Needs the repository secret VERCEL_TOKEN (a token from the Autoprocs Vercel account).
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+    paths: ['site/**', '.github/workflows/deploy.yml']
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-site
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: team_8zH2ol49MsoT0VPelt5dbvkV
+      VERCEL_PROJECT_ID: prj_UAiRXbjSuMHEPC2Rp9B6jnmRwua5
+    defaults:
+      run:
+        working-directory: site
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --global vercel@latest
+      - run: vercel deploy --prod --yes --token="${{ secrets.VERCEL_TOKEN }}"
