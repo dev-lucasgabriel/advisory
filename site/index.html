@@ -8,6 +8,10 @@
       var saved = localStorage.getItem('atalaia-theme');
       if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
     } catch(e) {}
+    // opening animation only runs with JS and when motion is allowed
+    if (!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      document.documentElement.classList.add('intro-on');
+    }
   })();
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -356,10 +360,56 @@
   .word-reveal .word:nth-child(6) .word-inner{ transition-delay:.32s; }
   @media (prefers-reduced-motion: reduce){ .word-inner{ transition:none; transform:none; } }
 
+  /* opening animation: four A's rise, merge into the logo mark, then the name appears */
+  .intro{ display:none; }
+  .intro-on body{ overflow:hidden; }
+  .intro-on .intro{
+    display:flex; position:fixed; inset:0; z-index:100; background: var(--surface-1);
+    flex-direction:column; align-items:center; justify-content:center; gap:30px;
+    animation: intro-out .6s ease 3s forwards;
+  }
+  .intro-stage{ position:relative; width:170px; height:131px; }
+  .intro-a{
+    position:absolute; left:50%; top:50%; width:44px; height:40px; margin:-20px 0 0 -22px;
+    background: url(assets/atalaia-letter-a-light.png) center/contain no-repeat;
+    opacity:0; transform: translate(var(--x), 70px);
+    animation: intro-a-rise .6s cubic-bezier(.2,.8,.2,1) var(--d) forwards,
+               intro-a-merge .55s cubic-bezier(.6,0,.3,1) 1.15s forwards;
+  }
+  :root[data-theme="light"] .intro-a{ background-image: url(assets/atalaia-letter-a-dark.png); }
+  .intro-a:nth-child(1){ --x:-117px; --d:.1s; }
+  .intro-a:nth-child(2){ --x:-39px;  --d:.22s; }
+  .intro-a:nth-child(3){ --x:39px;   --d:.34s; }
+  .intro-a:nth-child(4){ --x:117px;  --d:.46s; }
+  .intro-mark{
+    position:absolute; inset:0; width:100%; height:100%; opacity:0; transform: scale(.55);
+    animation: intro-mark-in .6s cubic-bezier(.2,.8,.2,1) 1.5s forwards;
+  }
+  .intro-name{
+    width:210px; height:auto; opacity:0; clip-path: inset(0 50% 0 50%);
+    animation: intro-name-in .7s cubic-bezier(.2,.8,.2,1) 2.05s forwards;
+  }
+  @keyframes intro-a-rise{ to{ opacity:1; transform: translate(var(--x), 0); } }
+  @keyframes intro-a-merge{ from{ opacity:1; transform: translate(var(--x), 0); } to{ opacity:0; transform: translate(0, 0) scale(2.4); } }
+  @keyframes intro-mark-in{ to{ opacity:1; transform: scale(1); } }
+  @keyframes intro-name-in{ to{ opacity:1; clip-path: inset(0 0 0 0); } }
+  @keyframes intro-out{ to{ opacity:0; visibility:hidden; } }
+
   ::selection{ background: var(--steel); color: #fff; }
 </style>
 </head>
 <body>
+
+<!-- ============ INTRO ============ -->
+<div class="intro" aria-hidden="true">
+  <div class="intro-stage">
+    <span class="intro-a"></span><span class="intro-a"></span><span class="intro-a"></span><span class="intro-a"></span>
+    <img class="intro-mark for-dark" src="assets/atalaia-icon-light.png" alt="">
+    <img class="intro-mark for-light" src="assets/atalaia-icon-dark.png" alt="">
+  </div>
+  <img class="intro-name for-dark" src="assets/atalaia-wordmark-light.png" alt="">
+  <img class="intro-name for-light" src="assets/atalaia-wordmark-dark.png" alt="">
+</div>
 
 <!-- ============ HEADER ============ -->
 <header id="topo" style="position:fixed;inset:0 0 auto 0;z-index:50;background:var(--header-bg);backdrop-filter:blur(8px);border-bottom:1px solid var(--line-on-navy);">
@@ -776,6 +826,7 @@
     if (el.matches && el.matches('.stat-ring[data-pct]')) el.style.setProperty('--pct', el.getAttribute('data-pct'));
   }
 
+  function startReveals(){
   var els = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function(entries){
@@ -790,6 +841,26 @@
     els.forEach(function(el){ io.observe(el); });
   } else {
     els.forEach(function(el){ el.classList.add('in'); triggerRevealExtras(el); });
+  }
+  }
+
+  // hold the page reveals until the opening animation clears; a click or key skips it
+  var intro = document.querySelector('.intro');
+  if (document.documentElement.classList.contains('intro-on') && intro) {
+    var introDone = false;
+    function endIntro(){
+      if (introDone) return;
+      introDone = true;
+      document.documentElement.classList.remove('intro-on');
+      intro.remove();
+      startReveals();
+    }
+    intro.addEventListener('animationend', function(e){ if (e.target === intro) endIntro(); });
+    intro.addEventListener('click', endIntro);
+    window.addEventListener('keydown', endIntro, { once:true });
+    setTimeout(endIntro, 4000);
+  } else {
+    startReveals();
   }
 
   if (!reduceMotion) {
