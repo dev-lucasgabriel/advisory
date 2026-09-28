@@ -606,6 +606,25 @@
   .ck-client{ margin-top:16px; padding:18px; border:1px dashed rgba(16,38,58,.22); border-radius:14px; }
   .ck-client-head{ display:flex; justify-content:space-between; align-items:center; gap:12px; }
   .ck-client-head b{ color: var(--navy); font-weight:600; }
+  .ck-access{ margin-top:14px; padding:16px 18px; border:1px solid var(--line-on-mist); border-radius:14px; background: var(--mist); }
+  .ck-access .field input, .ck-access .field select{ background:#fff; }
+  .grid-3{ display:grid; grid-template-columns:1fr; gap:0 14px; }
+  @media (min-width:640px){ .grid-3{ grid-template-columns: repeat(2,1fr); } }
+  @media (min-width:900px){ .grid-3{ grid-template-columns: repeat(3,1fr); } }
+  .field select{ display:block; width:100%; margin-top:7px; padding:11px 13px; font:inherit; font-size:.95rem; color: var(--ink); background: var(--mist); border:1px solid var(--line-on-mist); border-radius:10px; }
+  .field select:focus{ outline:none; border-color: var(--steel); box-shadow: 0 0 0 3px rgba(86,119,126,.18); }
+  .pw{ position:relative; display:block; }
+  .pw input{ padding-right:84px; }
+  .pw-toggle{ position:absolute; right:6px; top:50%; transform: translateY(-50%); margin-top:3px; font:inherit; font-size:.78rem; color: var(--steel-deep); background:transparent; border:0; padding:6px 8px; cursor:pointer; }
+  .ck-drop{ position:relative; display:flex; align-items:center; justify-content:center; gap:12px; margin-top:12px; padding:26px 18px; text-align:center; color: var(--ink-soft); border:1.5px dashed rgba(86,119,126,.55); border-radius:14px; background: var(--mist); cursor:pointer; transition: background .2s ease, border-color .2s ease; }
+  .ck-drop:hover, .ck-drop.over{ background: rgba(86,119,126,.08); border-color: var(--steel); }
+  .ck-drop b{ color: var(--steel-deep); font-weight:600; }
+  .ck-drop input{ position:absolute; inset:0; opacity:0; cursor:pointer; }
+  .ck-drop:focus-within{ outline:2px solid var(--steel); outline-offset:2px; }
+  .ck-files{ list-style:none; margin:10px 0 0; padding:0; }
+  .ck-files li{ display:flex; justify-content:space-between; align-items:center; gap:12px; padding:9px 0; font-size:.88rem; color: var(--ink); border-bottom:1px solid var(--line-on-mist); word-break:break-all; }
+  .ck-files .ck-files-total{ justify-content:flex-start; color: var(--ink-soft); border:0; }
+  .ck-files .ck-files-total.over{ color:#B42318; }
   .ck-remove{ font:inherit; font-size:.82rem; color: var(--ink-soft); background:none; border:0; cursor:pointer; text-decoration:underline; }
   .chips-in{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
   .chips-in label{ position:relative; }
@@ -1126,7 +1145,7 @@
 
       <div class="ck-alert" role="note">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-        <p><b>Não escreva senhas neste formulário.</b> Marque apenas se os acessos já estão prontos. Combinamos depois um canal seguro, como um cofre de senhas, para recebê-los.</p>
+        <p><b>Acessos e senhas vão direto para o e-mail da equipe Atalaia.</b> Por segurança, as senhas não ficam salvas no rascunho deste navegador: preencha-as por último, logo antes de enviar.</p>
       </div>
 
       <div class="ck-group ck-open">
@@ -1143,12 +1162,37 @@
 
       <div id="ck-groups"></div>
 
+      <div class="ck-group ck-open">
+        <div class="ck-head"><span class="ck-num">05</span><span>Acessos e senhas</span></div>
+        <div class="ck-body">
+          <p class="ck-hint">Um acesso por linha: servidor, sistemas, portais e os de cada empresa (SEFAZ, prefeitura, Simples Nacional, eSocial, FGTS Digital, e-CAC). Se preferir, anexe uma planilha com os acessos no bloco de documentos.</p>
+          <div id="ck-access"></div>
+          <button type="button" class="btn-ghost" id="ck-add-access">+ Adicionar acesso</button>
+        </div>
+      </div>
+
+      <div id="ck-part-a"></div>
+
       <div id="ck-clients-wrap" class="ck-group ck-open">
         <div class="ck-head"><span class="ck-num">B</span><span>Particularidades de cada cliente do escritório</span></div>
         <div class="ck-body">
           <p class="ck-hint">Adicione as empresas que têm algo fora do padrão. Se preferir, preencha as principais agora e envie o restante depois.</p>
           <div id="ck-clients"></div>
           <button type="button" class="btn-ghost" id="ck-add-client">+ Adicionar cliente</button>
+        </div>
+      </div>
+
+      <div class="ck-group ck-open">
+        <div class="ck-head"><span class="ck-num">C</span><span>Documentos</span></div>
+        <div class="ck-body">
+          <p class="ck-hint">Anexe o que já tiver: contrato, planilha de empresas, procurações, POPs, planilha de acessos. Até 4 MB no total; para arquivos maiores, cole o link de uma pasta compartilhada.</p>
+          <label class="ck-drop" id="ck-drop">
+            <input type="file" id="ck-files" multiple>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+            <span><b>Escolher arquivos</b> ou arrastar para cá</span>
+          </label>
+          <ul class="ck-files" id="ck-file-list"></ul>
+          <label class="field"><span>Link de pasta compartilhada (Google Drive, OneDrive, Dropbox)</span><input name="pasta_link" type="url" placeholder="https://"></label>
         </div>
       </div>
 
@@ -1429,7 +1473,7 @@
       'Acesso ao portal de comunicação com o cliente e gestão de tarefas (Onvio, Acessórias, Gclick, Trello etc.)',
       'Certificados digitais: onde estão instalados, validade e se a Atalaia pode usar',
       'Procurações e-CAC em nome do escritório, cobrindo os serviços que a Atalaia vai executar',
-      'Senhas de SEFAZ, prefeituras, Simples Nacional, eSocial e FGTS Digital de cada empresa organizadas, idealmente em cofre de senhas (não envie as senhas aqui)'
+      'Senhas de SEFAZ, prefeituras, Simples Nacional, eSocial e FGTS Digital de cada empresa (informe no bloco 05 ou anexe uma planilha)'
     ]},
     { n:'04', title:'Carteira que a Atalaia vai assumir', items:[
       'Planilha com todas as empresas: razão social, CNPJ, regime, atividade, UF e município',
@@ -1485,15 +1529,45 @@
         '<label class="field"><span>Observações</span><textarea name="g' + gi + '_obs" rows="2"></textarea></label>' +
         '</div></details>';
     }).join('');
+    document.getElementById('ck-groups').innerHTML = html;
     var qi = 0;
-    html += '<details class="ck-group" data-group="A"><summary><span class="ck-num">A</span><span>Particularidades do seu escritório</span><span class="ck-done" data-done="A"></span>' + CHEVRON + '</summary><div class="ck-body">' +
+    html = '<details class="ck-group" data-group="A"><summary><span class="ck-num">A</span><span>Particularidades do seu escritório</span><span class="ck-done" data-done="A"></span>' + CHEVRON + '</summary><div class="ck-body">' +
       CK_PART_A.map(function(sec){
         return '<p class="ck-sub">' + sec.t + '</p>' + sec.qs.map(function(q){
           var name = 'a_' + (qi++);
           return '<label class="field"><span>' + q + '</span><textarea name="' + name + '" rows="2"></textarea></label>';
         }).join('');
       }).join('') + '</div></details>';
-    document.getElementById('ck-groups').innerHTML = html;
+    document.getElementById('ck-part-a').innerHTML = html;
+  }
+
+  var CK_ACCESS_TYPES = ['Acesso remoto / VPN', 'Sistema contábil / fiscal / folha', 'Captura de XML', 'Portal de tarefas / comunicação',
+    'SEFAZ', 'Prefeitura', 'Simples Nacional', 'e-CAC', 'eSocial', 'FGTS Digital', 'Certificado digital', 'Outro'];
+  var accessSeq = 0;
+  function addAccess(){
+    var id = ++accessSeq, p = 'x' + id + '_';
+    var el = document.createElement('div');
+    el.className = 'ck-access';
+    el.setAttribute('data-access', id);
+    el.innerHTML =
+      '<div class="ck-client-head"><b>Acesso</b><button type="button" class="ck-remove">Remover</button></div>' +
+      '<div class="grid-3">' +
+      '<label class="field"><span>Tipo</span><select name="' + p + 'tipo">' + CK_ACCESS_TYPES.map(function(t){ return '<option>' + t + '</option>'; }).join('') + '</select></label>' +
+      '<label class="field"><span>Empresa</span><input name="' + p + 'empresa" placeholder="Escritório ou razão social / CNPJ"></label>' +
+      '<label class="field"><span>Endereço, site ou ID</span><input name="' + p + 'url" autocomplete="off"></label>' +
+      '<label class="field"><span>Usuário / login</span><input name="' + p + 'usuario" autocomplete="off"></label>' +
+      '<div class="field"><span>Senha</span><span class="pw"><input name="' + p + 'senha" type="password" autocomplete="new-password" data-secret aria-label="Senha"><button type="button" class="pw-toggle">Mostrar</button></span></div>' +
+      '<label class="field"><span>Observação</span><input name="' + p + 'obs"></label>' +
+      '</div>';
+    el.querySelector('.ck-remove').addEventListener('click', function(){ el.remove(); saveDraft(); });
+    var pw = el.querySelector('[data-secret]'), toggle = el.querySelector('.pw-toggle');
+    toggle.addEventListener('click', function(){
+      var show = pw.type === 'password';
+      pw.type = show ? 'text' : 'password';
+      toggle.textContent = show ? 'Ocultar' : 'Mostrar';
+    });
+    document.getElementById('ck-access').appendChild(el);
+    return id;
   }
 
   var clientSeq = 0;
@@ -1548,10 +1622,12 @@
   }
 
   function saveDraft(){
-    var data = { clients: [], fields: {} };
+    var data = { clients: [], access: [], fields: {} };
     ckForm.querySelectorAll('[data-client]').forEach(function(c){ data.clients.push(c.getAttribute('data-client')); });
+    ckForm.querySelectorAll('[data-access]').forEach(function(c){ data.access.push(c.getAttribute('data-access')); });
     [].forEach.call(ckForm.elements, function(el){
-      if (!el.name || el.name === '_honey') return;
+      // passwords are never written to the browser draft
+      if (!el.name || el.name === '_honey' || el.hasAttribute('data-secret')) return;
       if (el.type === 'radio' || el.type === 'checkbox') { if (el.checked) (data.fields[el.name] = data.fields[el.name] || []).push(el.value); }
       else if (el.value) data.fields[el.name] = el.value;
     });
@@ -1562,21 +1638,25 @@
     var data = null;
     try { data = JSON.parse(localStorage.getItem(CK_DRAFT_KEY) || 'null'); } catch(e) {}
     if (!data || !data.fields) return false;
-    (data.clients || []).forEach(function(oldId){
-      var id = addClient();
-      // client field names carry their id; map saved ids onto the new ones
-      Object.keys(data.fields).forEach(function(k){
-        var m = k.match(/^c(\d+)_(.+)$/);
-        if (m && m[1] === String(oldId)) { data.fields['c' + id + '_' + m[2]] = data.fields[k]; if (String(id) !== m[1]) delete data.fields[k]; }
+    // repeated blocks carry their id in field names; map saved ids onto the recreated ones
+    function recreate(oldIds, prefix, add){
+      (oldIds || []).forEach(function(oldId){
+        var id = add();
+        Object.keys(data.fields).forEach(function(k){
+          var m = k.match(new RegExp('^' + prefix + '(\\d+)_(.+)$'));
+          if (m && m[1] === String(oldId)) { data.fields[prefix + id + '_' + m[2]] = data.fields[k]; if (String(id) !== m[1]) delete data.fields[k]; }
+        });
       });
-    });
+    }
+    recreate(data.clients, 'c', addClient);
+    recreate(data.access, 'x', addAccess);
     [].forEach.call(ckForm.elements, function(el){
       var v = data.fields[el.name];
       if (v === undefined) return;
       if (el.type === 'radio' || el.type === 'checkbox') el.checked = [].concat(v).indexOf(el.value) !== -1;
       else el.value = v;
     });
-    return (data.clients || []).length > 0;
+    return { clients: (data.clients || []).length, access: (data.access || []).length };
   }
 
   function collectAnswers(){
@@ -1589,6 +1669,16 @@
       g.items.forEach(function(item, ii){ out[g.n + '.' + (ii + 1) + ' ' + item] = value('g' + gi + '_' + ii) || 'Sem resposta'; });
       out[g.n + ' Observações (' + g.title + ')'] = value('g' + gi + '_obs') || '-';
     });
+    var n = 0;
+    ckForm.querySelectorAll('[data-access]').forEach(function(c){
+      var p = 'x' + c.getAttribute('data-access') + '_';
+      var parts = [['Endereço', 'url'], ['Usuário', 'usuario'], ['Senha', 'senha'], ['Obs', 'obs']]
+        .filter(function(f){ return value(p + f[1]); })
+        .map(function(f){ return f[0] + ': ' + value(p + f[1]); });
+      if (!parts.length) return;
+      out['05.' + (++n) + ' ' + value(p + 'tipo') + ' (' + (value(p + 'empresa') || 'Escritório') + ')'] = parts.join(' | ');
+    });
+    if (!n) out['05 Acessos e senhas'] = 'Nenhum acesso informado';
     var qi = 0;
     CK_PART_A.forEach(function(sec){ sec.qs.forEach(function(q){ out['A. ' + q] = value('a_' + (qi++)) || '-'; }); });
     var k = 0;
@@ -1601,7 +1691,43 @@
       out[p + 'DP'] = value('c' + id + '_dp') || '-';
       out[p + 'Acordo especial'] = value('c' + id + '_acordo') || '-';
     });
+    out['C. Link de pasta compartilhada'] = value('pasta_link') || '-';
+    out['C. Anexos (chegam em um e-mail separado)'] = ckFiles.length ? ckFiles.map(function(f){ return f.name; }).join(', ') : 'Nenhum';
     return out;
+  }
+
+  // attachments: kept in memory and sent in a second, multipart submission
+  var CK_FILES_ENDPOINT = 'https://formsubmit.co/contato@atalaiagestao.com';
+  var CK_FILES_MAX = 4 * 1024 * 1024;
+  var ckFiles = [];
+  function filesSize(){ return ckFiles.reduce(function(sum, f){ return sum + f.size; }, 0); }
+  function formatSize(b){ return b < 1024 * 1024 ? Math.max(1, Math.round(b / 1024)) + ' KB' : (b / 1024 / 1024).toFixed(1).replace('.', ',') + ' MB'; }
+  function renderFiles(){
+    var list = document.getElementById('ck-file-list');
+    list.innerHTML = '';
+    ckFiles.forEach(function(f, i){
+      var li = document.createElement('li');
+      var name = document.createElement('span');
+      name.textContent = f.name + ' · ' + formatSize(f.size);
+      var rm = document.createElement('button');
+      rm.type = 'button'; rm.className = 'ck-remove'; rm.textContent = 'Remover';
+      rm.addEventListener('click', function(){ ckFiles.splice(i, 1); renderFiles(); });
+      li.appendChild(name); li.appendChild(rm);
+      list.appendChild(li);
+    });
+    if (ckFiles.length) {
+      var total = document.createElement('li');
+      total.className = 'ck-files-total' + (filesSize() > CK_FILES_MAX ? ' over' : '');
+      total.textContent = 'Total: ' + formatSize(filesSize()) + ' de 4 MB' + (filesSize() > CK_FILES_MAX ? '. Remova arquivos ou use o link de pasta compartilhada.' : '');
+      list.appendChild(total);
+    }
+  }
+  function addFiles(fileList){
+    [].forEach.call(fileList, function(f){
+      var dup = ckFiles.some(function(x){ return x.name === f.name && x.size === f.size; });
+      if (!dup) ckFiles.push(f);
+    });
+    renderFiles();
   }
 
   function answersAsText(answers){
@@ -1610,8 +1736,21 @@
 
   if (ckForm) {
     renderChecklist();
-    if (!restoreDraft()) addClient();
+    var restored = restoreDraft();
+    if (!restored || !restored.clients) addClient();
+    if (!restored || !restored.access) addAccess();
     updateProgress();
+    document.getElementById('ck-add-access').addEventListener('click', function(){
+      var id = addAccess();
+      ckForm.elements['x' + id + '_tipo'].focus();
+      saveDraft();
+    });
+    var fileInput = document.getElementById('ck-files');
+    var drop = document.getElementById('ck-drop');
+    fileInput.addEventListener('change', function(){ addFiles(fileInput.files); fileInput.value = ''; });
+    ['dragenter', 'dragover'].forEach(function(t){ drop.addEventListener(t, function(e){ e.preventDefault(); drop.classList.add('over'); }); });
+    ['dragleave', 'drop'].forEach(function(t){ drop.addEventListener(t, function(e){ e.preventDefault(); drop.classList.remove('over'); }); });
+    drop.addEventListener('drop', function(e){ if (e.dataTransfer) addFiles(e.dataTransfer.files); });
     var draftTimer;
     ckForm.addEventListener('input', function(e){
       if (e.target.getAttribute('aria-invalid')) e.target.removeAttribute('aria-invalid');
@@ -1641,6 +1780,12 @@
         return;
       }
       if (ckForm.elements._honey.value) return;
+      if (filesSize() > CK_FILES_MAX) {
+        status.className = 'ck-status err';
+        status.textContent = 'Os anexos passam de 4 MB. Remova alguns ou envie o link de uma pasta compartilhada.';
+        document.getElementById('ck-drop').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
 
       var answers = collectAnswers();
       var payload = {};
@@ -1658,10 +1803,33 @@
         body: JSON.stringify(payload)
       }).then(function(r){ return r.json(); }).then(function(res){
         if (String(res.success) !== 'true') throw new Error(res.message || 'falha');
-        status.className = 'ck-status ok';
-        status.textContent = 'Checklist enviado! Nossa equipe vai analisar e retornar pelo seu e-mail ou WhatsApp.';
         try { localStorage.removeItem(CK_DRAFT_KEY); } catch(err) {}
-      }).catch(function(){
+        if (!ckFiles.length) return 'Checklist enviado! Nossa equipe vai analisar e retornar pelo seu e-mail ou WhatsApp.';
+        // FormSubmit only takes attachments on its regular endpoint, which answers without CORS
+        status.textContent = 'Checklist enviado. Enviando anexos...';
+        var fd = new FormData();
+        fd.append('_captcha', 'false');
+        fd.append('_template', 'table');
+        fd.append('Referente a', payload._subject);
+        fd.append('Escritório', answers['Escritório']);
+        fd.append('email', answers.email);
+        ckFiles.forEach(function(f, i){ fd.append('anexo_' + (i + 1), f, f.name); });
+        return fetch(CK_FILES_ENDPOINT, { method: 'POST', mode: 'no-cors', body: fd }).then(function(){
+          var n = ckFiles.length;
+          ckFiles = []; renderFiles();
+          return 'Checklist e ' + n + (n === 1 ? ' anexo enviados!' : ' anexos enviados!') + ' Nossa equipe vai analisar e retornar pelo seu e-mail ou WhatsApp.';
+        }, function(){
+          throw new Error('anexos');
+        });
+      }).then(function(msg){
+        status.className = 'ck-status ok';
+        status.textContent = msg;
+      }).catch(function(err){
+        if (err && err.message === 'anexos') {
+          status.className = 'ck-status err';
+          status.textContent = 'O checklist foi enviado, mas os anexos não. Clique em Enviar de novo ou mande os arquivos para contato@atalaiagestao.com.';
+          return;
+        }
         status.className = 'ck-status err';
         status.innerHTML = 'Não foi possível enviar agora. Suas respostas continuam salvas: tente de novo em instantes ou <a href="#" id="ck-copy">copie as respostas</a> e envie para contato@atalaiagestao.com.';
         document.getElementById('ck-copy').addEventListener('click', function(ev){
