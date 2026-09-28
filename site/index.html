@@ -625,6 +625,18 @@
   .ck-files li{ display:flex; justify-content:space-between; align-items:center; gap:12px; padding:9px 0; font-size:.88rem; color: var(--ink); border-bottom:1px solid var(--line-on-mist); word-break:break-all; }
   .ck-files .ck-files-total{ justify-content:flex-start; color: var(--ink-soft); border:0; }
   .ck-files .ck-files-total.over{ color:#B42318; }
+  .ck-item-wrap{ border-top:1px solid var(--line-on-mist); }
+  .ck-item-wrap .ck-item{ border-top:0; }
+  .ck-code{ display:inline-block; min-width:40px; font-family:'Lexend Giga',sans-serif; font-size:.68rem; letter-spacing:.06em; color: var(--steel-deep); }
+  .ck-detail{ margin:0 0 16px; padding:4px 18px 18px; border-left:3px solid var(--steel); border-radius:0 12px 12px 0; background: var(--mist); }
+  .ck-detail[data-show="Pendente"]{ border-left-color:#B7791F; }
+  .ck-detail .field input, .ck-detail .field textarea, .ck-detail .field select{ background:#fff; }
+  .ck-detail .ck-drop{ background:#fff; }
+  .ck-client .ck-detail{ margin:0 0 8px; padding:0 14px 12px; }
+  @media (min-width:640px){ .field-wide{ grid-column: 1 / -1; } }
+  .ck-drop-sm{ justify-content:flex-start; padding:14px 16px; margin-top:8px; }
+  .ck-files-total{ margin:0; font-size:.85rem; color: var(--ink-soft); }
+  .ck-files-total.over{ color:#B42318; }
   .ck-remove{ font:inherit; font-size:.82rem; color: var(--ink-soft); background:none; border:0; cursor:pointer; text-decoration:underline; }
   .chips-in{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
   .chips-in label{ position:relative; }
@@ -1163,9 +1175,9 @@
       <div id="ck-groups"></div>
 
       <div class="ck-group ck-open">
-        <div class="ck-head"><span class="ck-num">05</span><span>Acessos e senhas</span></div>
+        <div class="ck-head"><span class="ck-num">05</span><span>Outros acessos e senhas</span></div>
         <div class="ck-body">
-          <p class="ck-hint">Um acesso por linha: servidor, sistemas, portais e os de cada empresa (SEFAZ, prefeitura, Simples Nacional, eSocial, FGTS Digital, e-CAC). Se preferir, anexe uma planilha com os acessos no bloco de documentos.</p>
+          <p class="ck-hint">Os portais de cada empresa (SEFAZ, prefeitura, Simples Nacional, e-CAC, eSocial, FGTS Digital) e qualquer acesso que não apareceu nos blocos acima. Um acesso por linha, ou anexe uma planilha no item 03.6.</p>
           <div id="ck-access"></div>
           <button type="button" class="btn-ghost" id="ck-add-access">+ Adicionar acesso</button>
         </div>
@@ -1183,15 +1195,15 @@
       </div>
 
       <div class="ck-group ck-open">
-        <div class="ck-head"><span class="ck-num">C</span><span>Documentos</span></div>
+        <div class="ck-head"><span class="ck-num">C</span><span>Outros documentos</span></div>
         <div class="ck-body">
-          <p class="ck-hint">Anexe o que já tiver: contrato, planilha de empresas, procurações, POPs, planilha de acessos. Até 4 MB no total; para arquivos maiores, cole o link de uma pasta compartilhada.</p>
-          <label class="ck-drop" id="ck-drop">
-            <input type="file" id="ck-files" multiple>
+          <p class="ck-hint">POPs, manuais internos ou qualquer arquivo que não tenha um item próprio acima. Os anexos do checklist somam até 4 MB no total; para arquivos maiores, cole o link de uma pasta compartilhada.</p>
+          <label class="ck-drop" data-drop="docs">
+            <input type="file" multiple data-slot="docs">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
             <span><b>Escolher arquivos</b> ou arrastar para cá</span>
           </label>
-          <ul class="ck-files" id="ck-file-list"></ul>
+          <ul class="ck-files" data-list="docs"></ul>
           <label class="field"><span>Link de pasta compartilhada (Google Drive, OneDrive, Dropbox)</span><input name="pasta_link" type="url" placeholder="https://"></label>
         </div>
       </div>
@@ -1200,6 +1212,7 @@
 
       <div class="ck-submit">
         <button type="submit" class="btn" id="ck-send">Enviar checklist</button>
+        <p class="ck-files-total" id="ck-files-total"></p>
         <p class="ck-status" id="ck-status" role="status" aria-live="polite"></p>
       </div>
     </form>
@@ -1450,36 +1463,113 @@
 
   // ---------------- checklist: answers go by e-mail to contato@atalaiagestao.com
   var CK_ENDPOINT = 'https://formsubmit.co/ajax/contato@atalaiagestao.com';
+  var CK_FILES_ENDPOINT = 'https://formsubmit.co/contato@atalaiagestao.com';
+  var CK_FILES_MAX = 4 * 1024 * 1024;
   var CK_DRAFT_KEY = 'atalaia-checklist';
   var CK_STATUS = ['Pronto', 'Pendente', 'Não se aplica'];
+
+  // each item asks, when "Pronto", for exactly what the Atalaia team needs to act on it
+  // field types: text, area, file, user, pass, select (opts)
   var CK_GROUPS = [
     { n:'01', title:'Formalização entre o seu escritório e a Atalaia', items:[
-      'Contrato de terceirização com escopo claro (quais empresas, quais rotinas, a partir de qual competência)',
-      'Termo de confidencialidade (NDA)',
-      'Termo LGPD definindo a Atalaia como operadora dos dados e o seu escritório como controlador',
-      'Matriz de responsabilidades: o que fica com a Atalaia e o que continua com o seu escritório (ex.: quem envia guias ao cliente final, quem responde notificações, quem assina)',
-      'Prazos combinados (SLA): até quando a Atalaia recebe os documentos e até quando entrega',
-      'Regra para retrabalho e para documento enviado fora do prazo'
+      { t:'Contrato de terceirização assinado, com escopo claro (quais empresas, quais rotinas, a partir de qual competência)', f:[
+        { k:'arquivo', type:'file', l:'Anexe o contrato assinado' },
+        { k:'escopo', type:'area', l:'Resumo do escopo: empresas, rotinas e competência de início' }
+      ]},
+      { t:'Termo de confidencialidade (NDA)', f:[
+        { k:'arquivo', type:'file', l:'Anexe o termo assinado' }
+      ]},
+      { t:'Termo LGPD definindo a Atalaia como operadora dos dados e o seu escritório como controlador', f:[
+        { k:'arquivo', type:'file', l:'Anexe o termo assinado' }
+      ]},
+      { t:'Matriz de responsabilidades: o que fica com a Atalaia e o que continua com o seu escritório', f:[
+        { k:'guias', type:'text', l:'Quem envia as guias ao cliente final?' },
+        { k:'notificacoes', type:'text', l:'Quem responde notificações e intimações?' },
+        { k:'assina', type:'text', l:'Quem assina e transmite?' },
+        { k:'arquivo', type:'file', l:'Se tiver a matriz em arquivo, anexe' }
+      ]},
+      { t:'Prazos combinados (SLA)', f:[
+        { k:'recebe', type:'text', l:'Até que dia do mês a Atalaia recebe os documentos?' },
+        { k:'entrega', type:'text', l:'Até que dia do mês a Atalaia entrega (apurações, guias, balancetes)?' },
+        { k:'outros', type:'area', l:'Outros prazos combinados' }
+      ]},
+      { t:'Regra para retrabalho e para documento enviado fora do prazo', f:[
+        { k:'regra', type:'area', l:'Qual é a regra combinada?' },
+        { k:'arquivo', type:'file', l:'Se estiver em arquivo, anexe' }
+      ]}
     ]},
     { n:'02', title:'Acessos ao servidor e à infraestrutura', items:[
-      'Acesso remoto ao servidor (VPN, RDP, AnyDesk, TeamViewer), com usuário próprio para a Atalaia, não compartilhado',
-      'Horários permitidos de acesso e contato do seu TI para quando o acesso cair',
-      'Pastas de rede ou nuvem onde ficam os arquivos (XMLs, extratos, folha, guias)',
-      'Padrão de nomenclatura e organização de pastas que vocês usam'
+      { t:'Acesso remoto ao servidor, com usuário próprio para a Atalaia (não compartilhado)', f:[
+        { k:'tipo', type:'select', l:'Tipo de acesso', opts:['AnyDesk', 'TeamViewer', 'RDP (área de trabalho remota)', 'VPN', 'Outro'] },
+        { k:'endereco', type:'text', l:'Endereço, IP ou ID de acesso' },
+        { k:'usuario', type:'user', l:'Usuário' },
+        { k:'senha', type:'pass', l:'Senha' },
+        { k:'instrucoes', type:'area', l:'Instruções de conexão (se houver)' }
+      ]},
+      { t:'Horários permitidos de acesso e contato do seu TI', f:[
+        { k:'horarios', type:'text', l:'Horários em que a Atalaia pode acessar' },
+        { k:'ti', type:'text', l:'Contato do TI: nome, telefone e e-mail' }
+      ]},
+      { t:'Pastas de rede ou nuvem onde ficam os arquivos (XMLs, extratos, folha, guias)', f:[
+        { k:'caminhos', type:'area', l:'Caminho ou link de cada pasta (ex.: \\\\servidor\\fiscal\\XML, link do Drive)' },
+        { k:'usuario', type:'user', l:'Usuário da pasta (se tiver)' },
+        { k:'senha', type:'pass', l:'Senha da pasta (se tiver)' }
+      ]},
+      { t:'Padrão de nomenclatura e organização de pastas', f:[
+        { k:'padrao', type:'area', l:'Descreva o padrão (ex.: CNPJ > Ano > Mês > Fiscal)' },
+        { k:'arquivo', type:'file', l:'Se tiver o padrão documentado, anexe' }
+      ]}
     ]},
     { n:'03', title:'Acessos a sistemas', items:[
-      'Usuário para a Atalaia no sistema contábil, fiscal e folha (Domínio, Alterdata, Questor, Fortes etc.) com os módulos e permissões necessários',
-      'Acesso à ferramenta de captura de XML e notas (SIEG, Arquivei, robôs próprios)',
-      'Acesso ao portal de comunicação com o cliente e gestão de tarefas (Onvio, Acessórias, Gclick, Trello etc.)',
-      'Certificados digitais: onde estão instalados, validade e se a Atalaia pode usar',
-      'Procurações e-CAC em nome do escritório, cobrindo os serviços que a Atalaia vai executar',
-      'Senhas de SEFAZ, prefeituras, Simples Nacional, eSocial e FGTS Digital de cada empresa (informe no bloco 05 ou anexe uma planilha)'
+      { t:'Usuário para a Atalaia no sistema contábil, fiscal e folha, com os módulos e permissões necessários', f:[
+        { k:'sistema', type:'select', l:'Sistema', opts:['Domínio', 'Onvio', 'Alterdata', 'Questor', 'Fortes', 'Contmatic', 'Outro'] },
+        { k:'versao', type:'text', l:'Versão ou endereço de acesso' },
+        { k:'usuario', type:'user', l:'Usuário' },
+        { k:'senha', type:'pass', l:'Senha' },
+        { k:'modulos', type:'text', l:'Módulos liberados (Escrita Fiscal, Contabilidade, Folha...)' }
+      ]},
+      { t:'Ferramenta de captura de XML e notas', f:[
+        { k:'ferramenta', type:'select', l:'Ferramenta', opts:['SIEG', 'Arquivei', 'Robô próprio', 'Outra'] },
+        { k:'endereco', type:'text', l:'Endereço de acesso' },
+        { k:'usuario', type:'user', l:'Usuário' },
+        { k:'senha', type:'pass', l:'Senha' }
+      ]},
+      { t:'Portal de comunicação com o cliente e gestão de tarefas', f:[
+        { k:'ferramenta', type:'select', l:'Ferramenta', opts:['Onvio', 'Acessórias', 'Gclick', 'Trello', 'Outra'] },
+        { k:'endereco', type:'text', l:'Endereço de acesso' },
+        { k:'usuario', type:'user', l:'Usuário' },
+        { k:'senha', type:'pass', l:'Senha' }
+      ]},
+      { t:'Certificados digitais das empresas', f:[
+        { k:'onde', type:'area', l:'Onde estão instalados, validade e se a Atalaia pode usar' },
+        { k:'arquivo', type:'file', l:'Anexe a planilha de certificados ou os arquivos A1 (.pfx)' },
+        { k:'senha', type:'pass', l:'Senha dos certificados A1 (se for a mesma para todos)' }
+      ]},
+      { t:'Procurações e-CAC em nome do escritório', f:[
+        { k:'servicos', type:'area', l:'Quais serviços e quais empresas as procurações cobrem?' },
+        { k:'arquivo', type:'file', l:'Anexe a lista ou os comprovantes das procurações' }
+      ]},
+      { t:'Senhas de SEFAZ, prefeituras, Simples Nacional, eSocial e FGTS Digital de cada empresa', f:[
+        { k:'arquivo', type:'file', l:'Anexe a planilha de senhas por empresa' },
+        { k:'obs', type:'area', l:'Se preferir, informe as senhas no bloco 05 abaixo. Observações:' }
+      ]}
     ]},
     { n:'04', title:'Carteira que a Atalaia vai assumir', items:[
-      'Planilha com todas as empresas: razão social, CNPJ, regime, atividade, UF e município',
-      'Rotinas por empresa (fiscal, contábil, DP) e obrigações acessórias de cada uma',
-      'Competência de início e situação atual de cada empresa (em dia, atrasada, com pendência)',
-      'Contato interno responsável por cada empresa ou área'
+      { t:'Planilha com todas as empresas: razão social, CNPJ, regime, atividade, UF e município', f:[
+        { k:'arquivo', type:'file', l:'Anexe a planilha' }
+      ]},
+      { t:'Rotinas por empresa (fiscal, contábil, DP) e obrigações acessórias de cada uma', f:[
+        { k:'arquivo', type:'file', l:'Anexe a lista de rotinas e obrigações' },
+        { k:'obs', type:'area', l:'Ou descreva aqui' }
+      ]},
+      { t:'Competência de início e situação atual de cada empresa', f:[
+        { k:'competencia', type:'text', l:'Competência de início (ex.: 10/2026)' },
+        { k:'situacao', type:'area', l:'Empresas atrasadas ou com pendência, e o que falta' },
+        { k:'arquivo', type:'file', l:'Se tiver em planilha, anexe' }
+      ]},
+      { t:'Contato interno responsável por cada empresa ou área', f:[
+        { k:'contatos', type:'area', l:'Nome, área e contato de cada responsável' }
+      ]}
     ]}
   ];
   var CK_PART_A = [
@@ -1508,9 +1598,11 @@
     ['parc', 'Tem parcelamentos, pendências ou histórico de fiscalização?'],
     ['atraso', 'Os documentos costumam chegar atrasados ou incompletos?']
   ];
+  var CK_ACCESS_TYPES = ['SEFAZ', 'Prefeitura', 'Simples Nacional', 'e-CAC', 'eSocial', 'FGTS Digital', 'Sistema', 'Acesso remoto / VPN', 'Outro'];
 
   var ckForm = document.getElementById('ck-form');
   var CHEVRON = '<svg class="ck-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+  var CLIP = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>';
 
   function optGroup(name, options){
     return '<span class="opt" role="radiogroup">' + options.map(function(o){
@@ -1518,56 +1610,57 @@
     }).join('') + '</span>';
   }
 
+  function dropZone(slot, label){
+    return '<div class="field field-wide"><span>' + label + '</span>' +
+      '<label class="ck-drop ck-drop-sm" data-drop="' + slot + '"><input type="file" multiple data-slot="' + slot + '">' + CLIP +
+      '<span><b>Escolher arquivos</b> ou arrastar para cá</span></label>' +
+      '<ul class="ck-files" data-list="' + slot + '"></ul></div>';
+  }
+
+  function passField(name, label){
+    return '<div class="field"><span>' + label + '</span><span class="pw"><input name="' + name + '" type="password" autocomplete="new-password" data-secret aria-label="' + label + '"><button type="button" class="pw-toggle">Mostrar</button></span></div>';
+  }
+
+  function fieldHtml(base, fld){
+    var name = base + '__' + fld.k;
+    if (fld.type === 'file') return dropZone(base + '__' + fld.k, fld.l);
+    if (fld.type === 'pass') return passField(name, fld.l);
+    if (fld.type === 'area') return '<label class="field field-wide"><span>' + fld.l + '</span><textarea name="' + name + '" rows="2"></textarea></label>';
+    if (fld.type === 'select') return '<label class="field"><span>' + fld.l + '</span><select name="' + name + '"><option value="">Selecione</option>' + fld.opts.map(function(o){ return '<option>' + o + '</option>'; }).join('') + '</select></label>';
+    return '<label class="field"><span>' + fld.l + '</span><input name="' + name + '"' + (fld.type === 'user' ? ' autocomplete="off"' : '') + '></label>';
+  }
+
   function renderChecklist(){
-    var html = CK_GROUPS.map(function(g, gi){
+    document.getElementById('ck-groups').innerHTML = CK_GROUPS.map(function(g, gi){
       return '<details class="ck-group" data-group="' + gi + '"' + (gi === 0 ? ' open' : '') + '>' +
         '<summary><span class="ck-num">' + g.n + '</span><span>' + g.title + '</span><span class="ck-done" data-done="' + gi + '"></span>' + CHEVRON + '</summary>' +
         '<div class="ck-body">' +
         g.items.map(function(item, ii){
-          return '<div class="ck-item"><p>' + item + '</p>' + optGroup('g' + gi + '_' + ii, CK_STATUS) + '</div>';
+          var base = 'g' + gi + '_' + ii;
+          return '<div class="ck-item-wrap">' +
+            '<div class="ck-item"><p><span class="ck-code">' + g.n + '.' + (ii + 1) + '</span>' + item.t + '</p>' + optGroup(base, CK_STATUS) + '</div>' +
+            '<div class="ck-detail" data-for="' + base + '" data-show="Pronto" hidden><div class="grid-2">' + item.f.map(function(fld){ return fieldHtml(base, fld); }).join('') + '</div></div>' +
+            '<div class="ck-detail" data-for="' + base + '" data-show="Pendente" hidden><label class="field"><span>O que falta e qual a previsão?</span><input name="' + base + '__falta"></label></div>' +
+            '</div>';
         }).join('') +
-        '<label class="field"><span>Observações</span><textarea name="g' + gi + '_obs" rows="2"></textarea></label>' +
+        '<label class="field"><span>Observações sobre este bloco</span><textarea name="g' + gi + '_obs" rows="2"></textarea></label>' +
         '</div></details>';
     }).join('');
-    document.getElementById('ck-groups').innerHTML = html;
+
     var qi = 0;
-    html = '<details class="ck-group" data-group="A"><summary><span class="ck-num">A</span><span>Particularidades do seu escritório</span><span class="ck-done" data-done="A"></span>' + CHEVRON + '</summary><div class="ck-body">' +
+    document.getElementById('ck-part-a').innerHTML =
+      '<details class="ck-group" data-group="A"><summary><span class="ck-num">A</span><span>Particularidades do seu escritório</span><span class="ck-done" data-done="A"></span>' + CHEVRON + '</summary><div class="ck-body">' +
       CK_PART_A.map(function(sec){
         return '<p class="ck-sub">' + sec.t + '</p>' + sec.qs.map(function(q){
-          var name = 'a_' + (qi++);
-          return '<label class="field"><span>' + q + '</span><textarea name="' + name + '" rows="2"></textarea></label>';
+          return '<label class="field"><span>' + q + '</span><textarea name="a_' + (qi++) + '" rows="2"></textarea></label>';
         }).join('');
       }).join('') + '</div></details>';
-    document.getElementById('ck-part-a').innerHTML = html;
   }
 
-  var CK_ACCESS_TYPES = ['Acesso remoto / VPN', 'Sistema contábil / fiscal / folha', 'Captura de XML', 'Portal de tarefas / comunicação',
-    'SEFAZ', 'Prefeitura', 'Simples Nacional', 'e-CAC', 'eSocial', 'FGTS Digital', 'Certificado digital', 'Outro'];
-  var accessSeq = 0;
-  function addAccess(){
-    var id = ++accessSeq, p = 'x' + id + '_';
-    var el = document.createElement('div');
-    el.className = 'ck-access';
-    el.setAttribute('data-access', id);
-    el.innerHTML =
-      '<div class="ck-client-head"><b>Acesso</b><button type="button" class="ck-remove">Remover</button></div>' +
-      '<div class="grid-3">' +
-      '<label class="field"><span>Tipo</span><select name="' + p + 'tipo">' + CK_ACCESS_TYPES.map(function(t){ return '<option>' + t + '</option>'; }).join('') + '</select></label>' +
-      '<label class="field"><span>Empresa</span><input name="' + p + 'empresa" placeholder="Escritório ou razão social / CNPJ"></label>' +
-      '<label class="field"><span>Endereço, site ou ID</span><input name="' + p + 'url" autocomplete="off"></label>' +
-      '<label class="field"><span>Usuário / login</span><input name="' + p + 'usuario" autocomplete="off"></label>' +
-      '<div class="field"><span>Senha</span><span class="pw"><input name="' + p + 'senha" type="password" autocomplete="new-password" data-secret aria-label="Senha"><button type="button" class="pw-toggle">Mostrar</button></span></div>' +
-      '<label class="field"><span>Observação</span><input name="' + p + 'obs"></label>' +
-      '</div>';
-    el.querySelector('.ck-remove').addEventListener('click', function(){ el.remove(); saveDraft(); });
-    var pw = el.querySelector('[data-secret]'), toggle = el.querySelector('.pw-toggle');
-    toggle.addEventListener('click', function(){
-      var show = pw.type === 'password';
-      pw.type = show ? 'text' : 'password';
-      toggle.textContent = show ? 'Ocultar' : 'Mostrar';
+  function syncDetails(){
+    ckForm.querySelectorAll('.ck-detail').forEach(function(d){
+      d.hidden = value(d.getAttribute('data-for')) !== d.getAttribute('data-show');
     });
-    document.getElementById('ck-access').appendChild(el);
-    return id;
   }
 
   var clientSeq = 0;
@@ -1584,12 +1677,34 @@
         return '<label><input type="checkbox" name="c' + id + '_trib" value="' + t + '"><span>' + t + '</span></label>';
       }).join('') + '</div></div>' +
       CK_YN.map(function(q){
-        return '<div class="yn"><p>' + q[1] + '</p>' + optGroup('c' + id + '_' + q[0], ['Sim', 'Não']) + '</div>';
+        return '<div class="yn"><p>' + q[1] + '</p>' + optGroup('c' + id + '_' + q[0], ['Sim', 'Não']) + '</div>' +
+          '<div class="ck-detail" data-for="c' + id + '_' + q[0] + '" data-show="Sim" hidden><label class="field"><span>Detalhe</span><input name="c' + id + '_' + q[0] + '_det"></label></div>';
       }).join('') +
       '<label class="field"><span>No DP: dia de pagamento, comissões, horas extras, sindicato, quem envia o ponto?</span><textarea name="c' + id + '_dp" rows="2"></textarea></label>' +
       '<label class="field"><span>Tem algum acordo especial com o cliente, como prazo diferenciado ou relatório extra?</span><textarea name="c' + id + '_acordo" rows="2"></textarea></label>';
     el.querySelector('.ck-remove').addEventListener('click', function(){ el.remove(); saveDraft(); updateProgress(); });
     document.getElementById('ck-clients').appendChild(el);
+    return id;
+  }
+
+  var accessSeq = 0;
+  function addAccess(){
+    var id = ++accessSeq, p = 'x' + id + '_';
+    var el = document.createElement('div');
+    el.className = 'ck-access';
+    el.setAttribute('data-access', id);
+    el.innerHTML =
+      '<div class="ck-client-head"><b>Acesso</b><button type="button" class="ck-remove">Remover</button></div>' +
+      '<div class="grid-3">' +
+      '<label class="field"><span>Tipo</span><select name="' + p + 'tipo">' + CK_ACCESS_TYPES.map(function(t){ return '<option>' + t + '</option>'; }).join('') + '</select></label>' +
+      '<label class="field"><span>Empresa</span><input name="' + p + 'empresa" placeholder="Razão social ou CNPJ"></label>' +
+      '<label class="field"><span>Endereço, site ou ID</span><input name="' + p + 'url" autocomplete="off"></label>' +
+      '<label class="field"><span>Usuário / login</span><input name="' + p + 'usuario" autocomplete="off"></label>' +
+      passField(p + 'senha', 'Senha') +
+      '<label class="field"><span>Observação</span><input name="' + p + 'obs"></label>' +
+      '</div>';
+    el.querySelector('.ck-remove').addEventListener('click', function(){ el.remove(); saveDraft(); });
+    document.getElementById('ck-access').appendChild(el);
     return id;
   }
 
@@ -1603,6 +1718,46 @@
     if (el.type === 'checkbox') return el.checked ? el.value : '';
     return (el.value || '').trim();
   }
+
+  // ---- attachments: one list per item slot, all sent together in a second, multipart submission
+  var ckFiles = []; // { slot, label, file }
+  function filesSize(){ return ckFiles.reduce(function(sum, x){ return sum + x.file.size; }, 0); }
+  function formatSize(b){ return b < 1024 * 1024 ? Math.max(1, Math.round(b / 1024)) + ' KB' : (b / 1024 / 1024).toFixed(1).replace('.', ',') + ' MB'; }
+  function slotLabel(slot){
+    var m = slot.match(/^g(\d+)_(\d+)__/);
+    return m ? CK_GROUPS[m[1]].n + '.' + (+m[2] + 1) : 'Outros';
+  }
+  function renderFiles(){
+    ckForm.querySelectorAll('[data-list]').forEach(function(list){
+      var slot = list.getAttribute('data-list');
+      list.innerHTML = '';
+      ckFiles.forEach(function(x, i){
+        if (x.slot !== slot) return;
+        var li = document.createElement('li');
+        var name = document.createElement('span');
+        name.textContent = x.file.name + ' · ' + formatSize(x.file.size);
+        var rm = document.createElement('button');
+        rm.type = 'button'; rm.className = 'ck-remove'; rm.textContent = 'Remover';
+        rm.addEventListener('click', function(){ ckFiles.splice(i, 1); renderFiles(); });
+        li.appendChild(name); li.appendChild(rm);
+        list.appendChild(li);
+      });
+    });
+    var total = document.getElementById('ck-files-total');
+    var over = filesSize() > CK_FILES_MAX;
+    total.className = 'ck-files-total' + (over ? ' over' : '');
+    total.textContent = ckFiles.length
+      ? 'Anexos: ' + ckFiles.length + ' ' + (ckFiles.length === 1 ? 'arquivo' : 'arquivos') + ', ' + formatSize(filesSize()) + ' de 4 MB' + (over ? '. Remova arquivos ou use o link de pasta compartilhada.' : '')
+      : '';
+  }
+  function addFiles(fileList, slot){
+    [].forEach.call(fileList, function(f){
+      var dup = ckFiles.some(function(x){ return x.slot === slot && x.file.name === f.name && x.file.size === f.size; });
+      if (!dup) ckFiles.push({ slot: slot, label: slotLabel(slot), file: f });
+    });
+    renderFiles();
+  }
+  function filesFor(slot){ return ckFiles.filter(function(x){ return x.slot === slot; }).map(function(x){ return x.file.name; }); }
 
   function updateProgress(){
     var total = 0, done = 0;
@@ -1626,8 +1781,8 @@
     ckForm.querySelectorAll('[data-client]').forEach(function(c){ data.clients.push(c.getAttribute('data-client')); });
     ckForm.querySelectorAll('[data-access]').forEach(function(c){ data.access.push(c.getAttribute('data-access')); });
     [].forEach.call(ckForm.elements, function(el){
-      // passwords are never written to the browser draft
-      if (!el.name || el.name === '_honey' || el.hasAttribute('data-secret')) return;
+      // passwords and files are never written to the browser draft
+      if (!el.name || el.name === '_honey' || el.type === 'file' || el.hasAttribute('data-secret')) return;
       if (el.type === 'radio' || el.type === 'checkbox') { if (el.checked) (data.fields[el.name] = data.fields[el.name] || []).push(el.value); }
       else if (el.value) data.fields[el.name] = el.value;
     });
@@ -1666,8 +1821,19 @@
     out['email'] = value('email');
     out['WhatsApp'] = value('whatsapp') || '-';
     CK_GROUPS.forEach(function(g, gi){
-      g.items.forEach(function(item, ii){ out[g.n + '.' + (ii + 1) + ' ' + item] = value('g' + gi + '_' + ii) || 'Sem resposta'; });
-      out[g.n + ' Observações (' + g.title + ')'] = value('g' + gi + '_obs') || '-';
+      g.items.forEach(function(item, ii){
+        var base = 'g' + gi + '_' + ii, status = value(base), parts = [status || 'Sem resposta'];
+        if (status === 'Pronto') {
+          item.f.forEach(function(fld){
+            var v = fld.type === 'file' ? filesFor(base + '__' + fld.k).join(', ') : value(base + '__' + fld.k);
+            if (v) parts.push(fld.type === 'file' ? 'Anexo: ' + v : fld.l.replace(/[?:]$/, '') + ': ' + v);
+          });
+        } else if (status === 'Pendente' && value(base + '__falta')) {
+          parts.push('Falta: ' + value(base + '__falta'));
+        }
+        out[g.n + '.' + (ii + 1) + ' ' + item.t] = parts.join(' | ');
+      });
+      if (value('g' + gi + '_obs')) out[g.n + ' Observações'] = value('g' + gi + '_obs');
     });
     var n = 0;
     ckForm.querySelectorAll('[data-access]').forEach(function(c){
@@ -1676,58 +1842,29 @@
         .filter(function(f){ return value(p + f[1]); })
         .map(function(f){ return f[0] + ': ' + value(p + f[1]); });
       if (!parts.length) return;
-      out['05.' + (++n) + ' ' + value(p + 'tipo') + ' (' + (value(p + 'empresa') || 'Escritório') + ')'] = parts.join(' | ');
+      out['05.' + (++n) + ' ' + value(p + 'tipo') + ' (' + (value(p + 'empresa') || 'sem empresa') + ')'] = parts.join(' | ');
     });
-    if (!n) out['05 Acessos e senhas'] = 'Nenhum acesso informado';
+    if (!n) out['05 Outros acessos'] = 'Nenhum informado';
     var qi = 0;
     CK_PART_A.forEach(function(sec){ sec.qs.forEach(function(q){ out['A. ' + q] = value('a_' + (qi++)) || '-'; }); });
     var k = 0;
     ckForm.querySelectorAll('[data-client]').forEach(function(c){
       var id = c.getAttribute('data-client'), p = 'B' + (++k) + ' ';
+      if (!value('c' + id + '_nome') && !value('c' + id + '_fora')) return;
       out[p + 'Empresa'] = value('c' + id + '_nome') || '(sem nome)';
       out[p + 'Fora do padrão'] = value('c' + id + '_fora') || '-';
       out[p + 'Opera com'] = value('c' + id + '_trib') || '-';
-      CK_YN.forEach(function(q){ out[p + q[1]] = value('c' + id + '_' + q[0]) || '-'; });
+      CK_YN.forEach(function(q){
+        var v = value('c' + id + '_' + q[0]);
+        out[p + q[1]] = (v || '-') + (v === 'Sim' && value('c' + id + '_' + q[0] + '_det') ? ': ' + value('c' + id + '_' + q[0] + '_det') : '');
+      });
       out[p + 'DP'] = value('c' + id + '_dp') || '-';
       out[p + 'Acordo especial'] = value('c' + id + '_acordo') || '-';
     });
+    out['C. Outros documentos'] = filesFor('docs').join(', ') || '-';
     out['C. Link de pasta compartilhada'] = value('pasta_link') || '-';
-    out['C. Anexos (chegam em um e-mail separado)'] = ckFiles.length ? ckFiles.map(function(f){ return f.name; }).join(', ') : 'Nenhum';
+    out['Anexos enviados (chegam em um e-mail separado)'] = ckFiles.length ? ckFiles.map(function(x){ return x.label + ': ' + x.file.name; }).join(', ') : 'Nenhum';
     return out;
-  }
-
-  // attachments: kept in memory and sent in a second, multipart submission
-  var CK_FILES_ENDPOINT = 'https://formsubmit.co/contato@atalaiagestao.com';
-  var CK_FILES_MAX = 4 * 1024 * 1024;
-  var ckFiles = [];
-  function filesSize(){ return ckFiles.reduce(function(sum, f){ return sum + f.size; }, 0); }
-  function formatSize(b){ return b < 1024 * 1024 ? Math.max(1, Math.round(b / 1024)) + ' KB' : (b / 1024 / 1024).toFixed(1).replace('.', ',') + ' MB'; }
-  function renderFiles(){
-    var list = document.getElementById('ck-file-list');
-    list.innerHTML = '';
-    ckFiles.forEach(function(f, i){
-      var li = document.createElement('li');
-      var name = document.createElement('span');
-      name.textContent = f.name + ' · ' + formatSize(f.size);
-      var rm = document.createElement('button');
-      rm.type = 'button'; rm.className = 'ck-remove'; rm.textContent = 'Remover';
-      rm.addEventListener('click', function(){ ckFiles.splice(i, 1); renderFiles(); });
-      li.appendChild(name); li.appendChild(rm);
-      list.appendChild(li);
-    });
-    if (ckFiles.length) {
-      var total = document.createElement('li');
-      total.className = 'ck-files-total' + (filesSize() > CK_FILES_MAX ? ' over' : '');
-      total.textContent = 'Total: ' + formatSize(filesSize()) + ' de 4 MB' + (filesSize() > CK_FILES_MAX ? '. Remova arquivos ou use o link de pasta compartilhada.' : '');
-      list.appendChild(total);
-    }
-  }
-  function addFiles(fileList){
-    [].forEach.call(fileList, function(f){
-      var dup = ckFiles.some(function(x){ return x.name === f.name && x.size === f.size; });
-      if (!dup) ckFiles.push(f);
-    });
-    renderFiles();
   }
 
   function answersAsText(answers){
@@ -1739,27 +1876,51 @@
     var restored = restoreDraft();
     if (!restored || !restored.clients) addClient();
     if (!restored || !restored.access) addAccess();
+    syncDetails();
     updateProgress();
-    document.getElementById('ck-add-access').addEventListener('click', function(){
-      var id = addAccess();
-      ckForm.elements['x' + id + '_tipo'].focus();
-      saveDraft();
-    });
-    var fileInput = document.getElementById('ck-files');
-    var drop = document.getElementById('ck-drop');
-    fileInput.addEventListener('change', function(){ addFiles(fileInput.files); fileInput.value = ''; });
-    ['dragenter', 'dragover'].forEach(function(t){ drop.addEventListener(t, function(e){ e.preventDefault(); drop.classList.add('over'); }); });
-    ['dragleave', 'drop'].forEach(function(t){ drop.addEventListener(t, function(e){ e.preventDefault(); drop.classList.remove('over'); }); });
-    drop.addEventListener('drop', function(e){ if (e.dataTransfer) addFiles(e.dataTransfer.files); });
+    renderFiles();
+
     var draftTimer;
     ckForm.addEventListener('input', function(e){
       if (e.target.getAttribute('aria-invalid')) e.target.removeAttribute('aria-invalid');
+      if (e.target.type === 'radio') syncDetails();
       clearTimeout(draftTimer); draftTimer = setTimeout(saveDraft, 400);
       updateProgress();
+    });
+    ckForm.addEventListener('change', function(e){
+      if (e.target.type === 'radio') syncDetails();
+      if (e.target.type === 'file') { addFiles(e.target.files, e.target.getAttribute('data-slot')); e.target.value = ''; }
+    });
+    ckForm.addEventListener('click', function(e){
+      var t = e.target.closest ? e.target.closest('.pw-toggle') : null;
+      if (!t) return;
+      var pw = t.parentNode.querySelector('input');
+      var show = pw.type === 'password';
+      pw.type = show ? 'text' : 'password';
+      t.textContent = show ? 'Ocultar' : 'Mostrar';
+    });
+    ['dragenter', 'dragover'].forEach(function(type){
+      ckForm.addEventListener(type, function(e){
+        var d = e.target.closest ? e.target.closest('[data-drop]') : null;
+        if (d) { e.preventDefault(); d.classList.add('over'); }
+      });
+    });
+    ['dragleave', 'drop'].forEach(function(type){
+      ckForm.addEventListener(type, function(e){
+        var d = e.target.closest ? e.target.closest('[data-drop]') : null;
+        if (!d) return;
+        e.preventDefault(); d.classList.remove('over');
+        if (type === 'drop' && e.dataTransfer) addFiles(e.dataTransfer.files, d.getAttribute('data-drop'));
+      });
     });
     document.getElementById('ck-add-client').addEventListener('click', function(){
       var id = addClient();
       ckForm.elements['c' + id + '_nome'].focus();
+      saveDraft();
+    });
+    document.getElementById('ck-add-access').addEventListener('click', function(){
+      var id = addAccess();
+      ckForm.elements['x' + id + '_tipo'].focus();
       saveDraft();
     });
 
@@ -1783,7 +1944,6 @@
       if (filesSize() > CK_FILES_MAX) {
         status.className = 'ck-status err';
         status.textContent = 'Os anexos passam de 4 MB. Remova alguns ou envie o link de uma pasta compartilhada.';
-        document.getElementById('ck-drop').scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
 
@@ -1813,7 +1973,7 @@
         fd.append('Referente a', payload._subject);
         fd.append('Escritório', answers['Escritório']);
         fd.append('email', answers.email);
-        ckFiles.forEach(function(f, i){ fd.append('anexo_' + (i + 1), f, f.name); });
+        ckFiles.forEach(function(x, i){ fd.append('anexo_' + (i + 1), x.file, x.label + ' - ' + x.file.name); });
         return fetch(CK_FILES_ENDPOINT, { method: 'POST', mode: 'no-cors', body: fd }).then(function(){
           var n = ckFiles.length;
           ckFiles = []; renderFiles();
