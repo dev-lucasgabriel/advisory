@@ -209,29 +209,38 @@
   .stat-num{ font-family:'Lexend',sans-serif; font-weight:600; font-size:1.9rem; color: var(--accent-strong); font-variant-numeric: tabular-nums; }
   .stat-label{ font-size:.83rem; color: rgba(var(--on-surface-rgb),.55); margin-top:5px; line-height:1.4; }
 
-  /* hero orbit visual */
-  .hero-visual{ position:relative; width:100%; max-width:340px; aspect-ratio:1; margin:0 auto; display:none; }
+  /* hero visual: a watchtower with every deliverable orbiting it */
+  .hero-visual{ position:relative; width:100%; max-width:470px; aspect-ratio:1; margin:0 auto; display:none; container-type:inline-size; }
   @media (min-width:640px){ .hero-visual{ display:block; } }
-  .orbit-ring{ position:absolute; inset:0; border-radius:50%; border:1px solid rgba(var(--glow-rgb),.22); }
-  .orbit-ring.r1{ animation: spin-border 50s linear infinite; }
-  .orbit-ring.r2{ inset:15%; border-style:dashed; animation: spin-border 34s linear infinite reverse; }
-  .orbit-core{
-    position:absolute; inset:0; margin:auto; width:150px; height:150px; border-radius:50%;
-    background: var(--navy-deep); border:1px solid rgba(var(--glow-rgb),.4);
-    display:flex; align-items:center; justify-content:center;
-    box-shadow: 0 0 46px -8px rgba(var(--glow-rgb),.4);
-    animation: pulse-ring 3.5s ease-in-out infinite;
-  }
+  .orbit-ring{ position:absolute; inset:4%; border-radius:50%; border:1px solid rgba(var(--glow-rgb),.2); }
+  .orbit-ring.r2{ inset:21%; border-style:dashed; border-color: rgba(var(--glow-rgb),.16); }
+  .orbit{ position:absolute; inset:0; z-index:2; --r:46cqw; --t:80s; animation: spin-border var(--t) linear infinite; }
+  .orbit.inner{ --r:29cqw; --t:60s; animation-direction: reverse; }
+  .orbit-item{ position:absolute; left:50%; top:50%; width:0; height:0; transform: rotate(var(--a)) translateY(calc(var(--r) * -1)) rotate(calc(var(--a) * -1)); }
   .orbit-chip{
-    position:absolute; transform:translate(-50%,-50%);
+    position:absolute; left:0; top:0;
     background: var(--navy-deep); border:1px solid rgba(var(--glow-rgb),.35); color: var(--steel-soft);
-    font-family:'Lexend',sans-serif; font-weight:600; font-size:.72rem; letter-spacing:.03em;
-    padding:8px 14px; border-radius:999px; white-space:nowrap;
-    animation: float-chip 5s ease-in-out infinite;
+    font-family:'Lexend',sans-serif; font-weight:500; font-size:.7rem; letter-spacing:.02em;
+    padding:7px 13px; border-radius:999px; white-space:nowrap;
+    box-shadow: 0 6px 18px -8px rgba(0,0,0,.5);
+    animation: chip-upright var(--t) linear infinite;
+    transition: border-color .2s ease, color .2s ease;
   }
-  @keyframes float-chip{ 0%,100%{ transform:translate(-50%,-50%); } 50%{ transform:translate(-50%,calc(-50% - 8px)); } }
+  .orbit.inner .orbit-chip{ animation-direction: reverse; }
+  .orbit-chip:hover{ border-color: var(--steel-soft); color:#fff; }
+  .hero-visual:hover .orbit, .hero-visual:hover .orbit-chip{ animation-play-state: paused; }
+  @keyframes chip-upright{ from{ transform:translate(-50%,-50%) rotate(0deg); } to{ transform:translate(-50%,-50%) rotate(-360deg); } }
+
+  .tower{ position:absolute; left:50%; top:50%; z-index:1; width:27%; height:auto; transform: translate(-50%,-27%); overflow:visible; }
+  .tw-a{ fill: var(--on-surface); }
+  .tw-b{ fill: var(--accent-text); }
+  .tw-line{ fill:none; stroke: var(--accent-text); stroke-width:2.2; stroke-linecap:round; }
+  .tw-ground{ fill:none; stroke: var(--on-surface); stroke-width:3; stroke-linecap:round; }
+  .tw-light{ fill:#FDF1D2; animation: tower-light 3.2s ease-in-out infinite; }
+  .tw-glow{ animation: tower-light 3.2s ease-in-out infinite; }
+  @keyframes tower-light{ 0%,100%{ opacity:.75; } 50%{ opacity:1; } }
   @media (prefers-reduced-motion: reduce){
-    .orbit-ring, .orbit-core, .orbit-chip{ animation:none; }
+    .orbit, .orbit-chip, .tw-light, .tw-glow{ animation:none; }
   }
 
   /* process steps */
@@ -442,7 +451,7 @@
     mask-image: radial-gradient(circle, #000 18%, transparent 62%);
     animation: spin-border 9s linear infinite;
   }
-  .hero-visual .orbit-ring, .hero-visual .orbit-core, .hero-visual .orbit-chip{ z-index:1; }
+  .hero-visual .orbit-ring{ z-index:1; }
   @media (prefers-reduced-motion: reduce){ .beam{ animation:none; } }
 
   /* hero stat meters */
@@ -587,12 +596,48 @@
     <div class="beam"></div>
     <div class="orbit-ring r1"></div>
     <div class="orbit-ring r2"></div>
-    <div class="orbit-core">
-      <img src="assets/atalaia-logo-light.png" alt="" width="100" height="62">
+    <svg class="tower" viewBox="0 0 120 200">
+      <defs>
+        <radialGradient id="tw-glow"><stop offset="0" stop-color="#FDF1D2" stop-opacity=".55"/><stop offset="1" stop-color="#FDF1D2" stop-opacity="0"/></radialGradient>
+      </defs>
+      <circle class="tw-glow" cx="60" cy="55" r="38" fill="url(#tw-glow)"/>
+      <!-- roof split in two tones, like the logo -->
+      <polygon class="tw-a" points="60,4 30,38 60,38"/>
+      <polygon class="tw-b" points="60,4 90,38 60,38"/>
+      <rect class="tw-a" x="28" y="38" width="64" height="4"/>
+      <!-- lookout cabin with lit windows -->
+      <rect class="tw-a" x="37" y="42" width="46" height="27" opacity=".92"/>
+      <rect class="tw-light" x="42" y="47" width="9" height="15"/>
+      <rect class="tw-light" x="55.5" y="47" width="9" height="15"/>
+      <rect class="tw-light" x="69" y="47" width="9" height="15"/>
+      <!-- balcony -->
+      <rect class="tw-a" x="25" y="69" width="70" height="4"/>
+      <rect class="tw-a" x="25" y="60" width="70" height="2"/>
+      <rect class="tw-a" x="25" y="60" width="2" height="10"/>
+      <rect class="tw-a" x="93" y="60" width="2" height="10"/>
+      <!-- tapered legs with cross bracing -->
+      <polygon class="tw-a" points="40,73 46,73 30,180 22,180"/>
+      <polygon class="tw-a" points="74,73 80,73 98,180 90,180"/>
+      <path class="tw-line" d="M42.5 96H77.5M38 126H82M33.5 156H86.5M42.5 96L82 126M77.5 96L38 126M38 126L86.5 156M82 126L33.5 156"/>
+      <!-- horizon arc, as under the logo -->
+      <path class="tw-ground" d="M2 190Q60 170 118 190"/>
+    </svg>
+    <div class="orbit outer">
+      <span class="orbit-item" style="--a:0deg"><span class="orbit-chip">Simples Nacional</span></span>
+      <span class="orbit-item" style="--a:60deg"><span class="orbit-chip">EFD-REINF</span></span>
+      <span class="orbit-item" style="--a:120deg"><span class="orbit-chip">Lucro Presumido</span></span>
+      <span class="orbit-item" style="--a:180deg"><span class="orbit-chip">EFD-Contribuições</span></span>
+      <span class="orbit-item" style="--a:240deg"><span class="orbit-chip">ISSQN</span></span>
+      <span class="orbit-item" style="--a:300deg"><span class="orbit-chip">Retenções federais</span></span>
     </div>
-    <span class="orbit-chip" style="top:6%;left:50%;">Simples Nacional</span>
-    <span class="orbit-chip" style="top:72%;left:8%;animation-delay:.6s;">DIFAL</span>
-    <span class="orbit-chip" style="top:80%;left:80%;animation-delay:1.2s;">ECF</span>
+    <div class="orbit inner">
+      <span class="orbit-item" style="--a:30deg"><span class="orbit-chip">PGDAS</span></span>
+      <span class="orbit-item" style="--a:90deg"><span class="orbit-chip">DIFAL</span></span>
+      <span class="orbit-item" style="--a:150deg"><span class="orbit-chip">SEDIF</span></span>
+      <span class="orbit-item" style="--a:210deg"><span class="orbit-chip">DEFIS</span></span>
+      <span class="orbit-item" style="--a:270deg"><span class="orbit-chip">DCTF</span></span>
+      <span class="orbit-item" style="--a:330deg"><span class="orbit-chip">ECF</span></span>
+    </div>
   </div>
   </div>
 </section>
