@@ -15,8 +15,8 @@
   })();
 </script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ATALAIA | Terceirização do Departamento Fiscal para Contadores</title>
-<meta name="description" content="A Atalaia terceiriza o Departamento Fiscal do seu escritório de contabilidade. Você mantém a carteira, a marca e o relacionamento com o cliente. Entregamos no prazo, sob responsabilidade técnica.">
+<title>ATALAIA | Terceirização dos Departamentos Fiscal e Contábil para Contadores</title>
+<meta name="description" content="A Atalaia terceiriza os Departamentos Fiscal e Contábil do seu escritório de contabilidade. Você mantém a carteira, a marca e o relacionamento com o cliente. Entregamos no prazo, sob responsabilidade técnica.">
 <link rel="icon" type="image/png" href="assets/favicon-64.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 
@@ -245,7 +245,7 @@
 
   /* process steps */
   .steps{ display:grid; grid-template-columns: 1fr; gap: 40px; counter-reset: step; }
-  @media (min-width:860px){ .steps{ grid-template-columns: repeat(4,1fr); gap:28px; } }
+  @media (min-width:860px){ .steps{ grid-template-columns: repeat(3,1fr); gap:40px; } }
   .step{ position:relative; padding-top: 104px; }
   .step-num{
     position:absolute; top:0; left:-2px;
@@ -373,6 +373,8 @@
   .word-reveal .word:nth-child(4) .word-inner{ transition-delay:.2s; }
   .word-reveal .word:nth-child(5) .word-inner{ transition-delay:.26s; }
   .word-reveal .word:nth-child(6) .word-inner{ transition-delay:.32s; }
+  .word-reveal .word:nth-child(7) .word-inner{ transition-delay:.38s; }
+  .word-reveal .word:nth-child(8) .word-inner{ transition-delay:.44s; }
   @media (prefers-reduced-motion: reduce){ .word-inner{ transition:none; transform:none; } }
 
   /* opening animation: four A's rise, merge into the logo mark, then the name appears */
@@ -477,6 +479,7 @@
     display:grid; grid-template-columns:1fr; gap:1px; border-radius:18px; overflow:hidden;
     background: var(--line-on-navy); border:1px solid var(--line-on-navy);
   }
+  .svc-grid[hidden]{ display:none; }
   @media (min-width:640px){ .svc-grid{ grid-template-columns: repeat(2,1fr); } }
   @media (min-width:960px){ .svc-grid{ grid-template-columns: repeat(3,1fr); } }
   .svc{
@@ -495,6 +498,134 @@
     .svc{ flex-direction:row; align-items:center; gap:16px; min-height:0; padding:18px 20px; }
     .svc::after{ display:none; }
   }
+
+  /* values (quem somos) */
+  .values{ display:grid; grid-template-columns:1fr; gap:14px; margin-top:64px; }
+  @media (min-width:640px){ .values{ grid-template-columns: repeat(2,1fr); } }
+  @media (min-width:1000px){ .values{ grid-template-columns: repeat(4,1fr); } }
+  .value{ background:#fff; border:1px solid var(--line-on-mist); border-radius:16px; padding:24px 22px; }
+  .value p{ margin:0; color: var(--ink-soft); line-height:1.6; font-size:.94rem; }
+  .value .value-k{ display:flex; align-items:center; gap:10px; margin:0 0 12px; font-family:'Lexend Giga',sans-serif; font-weight:500; font-size:.74rem; letter-spacing:.12em; text-transform:uppercase; color: var(--steel-deep); }
+  .value-k::before{ content:''; width:14px; height:10px; background: var(--steel); clip-path: polygon(50% 0,100% 100%,72% 100%,50% 52%,28% 100%,0 100%); }
+
+  /* department tabs */
+  .tabs-wrap{ text-align:center; margin-bottom:28px; }
+  .tabs{ display:inline-flex; gap:4px; padding:4px; border:1px solid var(--line-on-navy); border-radius:999px; }
+  .tab{ font:inherit; font-weight:500; font-size:.9rem; padding:10px 22px; border:0; border-radius:999px; background:transparent; color: rgba(var(--on-surface-rgb),.7); cursor:pointer; transition: background .2s ease, color .2s ease; }
+  .tab:hover{ color: var(--on-surface); }
+  .tab[aria-selected="true"]{ background: var(--steel); color:#fff; }
+  .tab:focus-visible, .seg button:focus-visible, .pain:focus-visible, .qty button:focus-visible{ outline:2px solid var(--steel-soft); outline-offset:2px; }
+
+  /* difficulties -> benefits */
+  .pains-grid{ display:grid; grid-template-columns:1fr; gap:44px; }
+  @media (min-width:960px){ .pains-grid{ grid-template-columns: .95fr 1.05fr; align-items:start; } }
+  .pain{
+    display:flex; align-items:center; gap:14px; width:100%; margin:0 0 10px; padding:14px 16px; text-align:left;
+    font:inherit; font-size:.97rem; color: var(--on-surface); background:transparent; cursor:pointer;
+    border:1px solid var(--line-on-navy); border-radius:12px; transition: border-color .2s ease, background .2s ease;
+  }
+  .pain:hover{ border-color: rgba(var(--glow-rgb),.45); }
+  .pain-box{ flex:none; width:22px; height:22px; border-radius:6px; border:1.5px solid rgba(var(--glow-rgb),.6); display:grid; place-items:center; color:transparent; transition: background .2s ease, color .2s ease; }
+  .pain[aria-pressed="true"]{ border-color: var(--steel-soft); background: rgba(var(--glow-rgb),.08); }
+  .pain[aria-pressed="true"] .pain-box{ background: var(--steel-soft); border-color: var(--steel-soft); color: var(--navy-deep); }
+  .pains-note{ margin:0 0 18px; color: rgba(var(--on-surface-rgb),.65); line-height:1.6; }
+  .pains-note b{ color: var(--on-surface); }
+  .benefits{ display:grid; grid-template-columns:1fr; gap:12px; }
+  @media (min-width:640px){ .benefits{ grid-template-columns: repeat(2,1fr); } }
+  .benefit{ border:1px solid var(--line-on-navy); border-radius:14px; padding:20px; background: rgba(var(--on-surface-rgb),.02); transition: opacity .3s ease, border-color .3s ease, background .3s ease, transform .3s ease; }
+  .benefit h3{ font-size:1rem; font-weight:600; margin:0 0 6px; }
+  .benefit p{ margin:0; font-size:.9rem; line-height:1.55; color: rgba(var(--on-surface-rgb),.62); }
+  .benefit .resolve{ display:block; margin-top:12px; font-family:'Lexend Giga',sans-serif; font-size:.6rem; letter-spacing:.08em; text-transform:uppercase; color: var(--accent-text); }
+  .benefits.filtering .benefit{ opacity:.35; }
+  .benefits.filtering .benefit.hit{ opacity:1; border-color: var(--steel-soft); background: rgba(var(--glow-rgb),.1); transform: translateY(-2px); }
+
+  /* build-your-proposal */
+  .calc{ display:grid; grid-template-columns:1fr; gap:22px; }
+  @media (min-width:960px){ .calc{ grid-template-columns: 1.3fr .9fr; align-items:start; } }
+  .calc-card{ border:1px solid var(--line-on-navy); border-radius:18px; padding:26px; background: rgba(var(--on-surface-rgb),.03); }
+  .seg{ display:flex; gap:4px; padding:4px; border:1px solid var(--line-on-navy); border-radius:12px; }
+  .seg button{ flex:1; font:inherit; font-size:.88rem; font-weight:500; padding:11px 8px; border:0; border-radius:9px; background:transparent; color: rgba(var(--on-surface-rgb),.7); cursor:pointer; transition: background .2s ease, color .2s ease; }
+  .seg button[aria-pressed="true"]{ background: var(--steel); color:#fff; }
+  .calc-row{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 0; border-top:1px solid var(--line-on-navy); }
+  .calc-reg b{ display:block; font-weight:500; }
+  .calc-reg small{ font-size:.82rem; color: rgba(var(--on-surface-rgb),.55); }
+  .qty{ display:flex; align-items:center; border:1px solid var(--line-on-navy); border-radius:10px; overflow:hidden; }
+  .qty button{ width:40px; height:42px; border:0; background:transparent; color: var(--on-surface); font-size:1.15rem; cursor:pointer; }
+  .qty button:hover{ background: rgba(var(--glow-rgb),.12); }
+  .qty input{ width:54px; height:42px; border:0; text-align:center; background:transparent; color: var(--on-surface); font:inherit; font-weight:600; -moz-appearance:textfield; appearance:textfield; }
+  .qty input::-webkit-inner-spin-button, .qty input::-webkit-outer-spin-button{ -webkit-appearance:none; margin:0; }
+  .calc-total{ margin:6px 0 0; font-weight:600; font-size:clamp(2.4rem,5vw,3.2rem); line-height:1; letter-spacing:-0.04em; font-variant-numeric: tabular-nums; }
+  .calc-total small{ font-size:1rem; font-weight:400; letter-spacing:0; color: rgba(var(--on-surface-rgb),.6); }
+  .calc-dep{ margin:10px 0 18px; color: var(--accent-text); font-size:.92rem; }
+  .calc-lines div{ display:flex; justify-content:space-between; gap:12px; padding:8px 0; font-size:.88rem; border-bottom:1px dashed var(--line-on-navy); }
+  .calc-lines .empty{ color: rgba(var(--on-surface-rgb),.5); border:0; }
+  .calc-min{ margin:18px 0 22px; font-size:.85rem; line-height:1.55; color: rgba(var(--on-surface-rgb),.6); }
+  .calc-min.warn{ color:#E8C38A; }
+  .calc-summary .btn{ width:100%; justify-content:center; }
+
+  /* checklist */
+  .ck{ max-width:920px; margin:0 auto; }
+  .ck-progress{ position:sticky; top:80px; z-index:5; padding:14px 0; margin-bottom:6px; background: rgba(243,246,248,.94); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+  .ck-progress-top{ display:flex; justify-content:space-between; font-size:.82rem; color: var(--ink-soft); margin-bottom:8px; }
+  .ck-bar{ height:6px; border-radius:6px; background: rgba(16,38,58,.1); overflow:hidden; }
+  .ck-bar i{ display:block; height:100%; width:0; border-radius:inherit; background: linear-gradient(90deg, var(--steel), var(--steel-soft)); transition: width .4s ease; }
+  .ck-alert{ display:flex; gap:12px; align-items:flex-start; margin:0 0 16px; padding:14px 16px; border-radius:12px; background:#FFF8E6; border:1px solid #F0DCA8; color:#6B4E12; font-size:.9rem; line-height:1.55; }
+  .ck-alert svg{ flex:none; margin-top:1px; }
+  .ck-alert p{ margin:0; }
+  .ck-group{ background:#fff; border:1px solid var(--line-on-mist); border-radius:16px; margin-bottom:14px; overflow:hidden; }
+  .ck-group > summary, .ck-head{ display:flex; align-items:center; gap:14px; padding:20px 24px; font-weight:600; color: var(--navy); list-style:none; }
+  .ck-group > summary{ cursor:pointer; }
+  .ck-group > summary::-webkit-details-marker{ display:none; }
+  .ck-num{ flex:none; min-width:34px; font-family:'Lexend Giga',sans-serif; font-size:.72rem; font-weight:500; letter-spacing:.08em; color: var(--steel-deep); }
+  .ck-done{ margin-left:auto; font-size:.8rem; font-weight:400; color: var(--ink-soft); white-space:nowrap; }
+  .ck-chev{ flex:none; transition: transform .2s ease; color: var(--ink-soft); }
+  .ck-group[open] .ck-chev{ transform: rotate(180deg); }
+  .ck-body{ padding:0 24px 22px; }
+  .ck-item{ display:grid; grid-template-columns:1fr; gap:10px; padding:14px 0; border-top:1px solid var(--line-on-mist); }
+  @media (min-width:760px){ .ck-item{ grid-template-columns: 1fr auto; align-items:center; gap:20px; } }
+  .ck-item p{ margin:0; color: var(--ink); font-size:.94rem; line-height:1.5; }
+  .opt{ display:inline-flex; border:1px solid var(--line-on-mist); border-radius:10px; overflow:hidden; justify-self:start; }
+  .opt label{ position:relative; }
+  .opt input{ position:absolute; opacity:0; width:1px; height:1px; }
+  .opt span{ display:block; padding:8px 13px; font-size:.8rem; color: var(--ink-soft); cursor:pointer; white-space:nowrap; transition: background .15s ease, color .15s ease; }
+  .opt label + label span{ border-left:1px solid var(--line-on-mist); }
+  .opt input:checked + span{ background: var(--steel); color:#fff; }
+  .opt input[value="Pendente"]:checked + span{ background:#B7791F; }
+  .opt input[value="Não se aplica"]:checked + span{ background:#8A96A3; }
+  .opt input:focus-visible + span{ outline:2px solid var(--steel); outline-offset:-2px; }
+  .field{ display:block; margin-top:14px; }
+  .field > span{ display:block; font-size:.86rem; font-weight:500; color: var(--ink); line-height:1.45; }
+  .field input, .field textarea{ display:block; width:100%; margin-top:7px; padding:11px 13px; font:inherit; font-size:.95rem; color: var(--ink); background: var(--mist); border:1px solid var(--line-on-mist); border-radius:10px; transition: border-color .15s ease, box-shadow .15s ease; }
+  .field textarea{ resize:vertical; min-height:64px; }
+  .field input:focus, .field textarea:focus{ outline:none; border-color: var(--steel); box-shadow: 0 0 0 3px rgba(86,119,126,.18); }
+  .field input[aria-invalid="true"]{ border-color:#B42318; }
+  .grid-2{ display:grid; grid-template-columns:1fr; gap:0 16px; }
+  @media (min-width:640px){ .grid-2{ grid-template-columns: repeat(2,1fr); } }
+  .ck-sub{ margin:22px 0 0; font-family:'Lexend Giga',sans-serif; font-size:.66rem; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color: var(--steel-deep); }
+  .ck-hint{ margin:0 0 6px; color: var(--ink-soft); font-size:.9rem; line-height:1.55; }
+  .ck-client{ margin-top:16px; padding:18px; border:1px dashed rgba(16,38,58,.22); border-radius:14px; }
+  .ck-client-head{ display:flex; justify-content:space-between; align-items:center; gap:12px; }
+  .ck-client-head b{ color: var(--navy); font-weight:600; }
+  .ck-remove{ font:inherit; font-size:.82rem; color: var(--ink-soft); background:none; border:0; cursor:pointer; text-decoration:underline; }
+  .chips-in{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+  .chips-in label{ position:relative; }
+  .chips-in input{ position:absolute; opacity:0; width:1px; height:1px; }
+  .chips-in span{ display:block; padding:7px 13px; font-size:.82rem; color: var(--ink-soft); border:1px solid var(--line-on-mist); border-radius:999px; cursor:pointer; }
+  .chips-in input:checked + span{ background: var(--steel); border-color: var(--steel); color:#fff; }
+  .chips-in input:focus-visible + span{ outline:2px solid var(--steel); outline-offset:2px; }
+  .yn{ display:grid; grid-template-columns:1fr; gap:8px; padding:12px 0; border-top:1px solid var(--line-on-mist); }
+  @media (min-width:640px){ .yn{ grid-template-columns: 1fr auto; align-items:center; } }
+  .yn p{ margin:0; font-size:.92rem; color: var(--ink); }
+  .btn-ghost{ margin-top:16px; font:inherit; font-weight:500; font-size:.92rem; padding:12px 18px; color: var(--steel-deep); background:transparent; border:1px dashed var(--steel); border-radius:10px; cursor:pointer; }
+  .btn-ghost:hover{ background: rgba(86,119,126,.08); }
+  .ck-honey{ position:absolute; left:-9999px; width:1px; height:1px; opacity:0; }
+  .ck-submit{ display:flex; flex-wrap:wrap; align-items:center; gap:16px; margin-top:24px; }
+  .ck-submit .btn{ border:0; cursor:pointer; font-family:'Lexend',sans-serif; }
+  .ck-submit .btn[disabled]{ opacity:.6; cursor:wait; }
+  .ck-status{ margin:0; font-size:.92rem; line-height:1.5; color: var(--ink-soft); }
+  .ck-status.ok{ color:#1E6B52; }
+  .ck-status.err{ color:#B42318; }
+  .ck-status a{ color:inherit; }
 
   /* footer watermark */
   .footer-mark{ width:min(1080px,90%); height:auto; margin:56px auto 0; opacity:.07; }
@@ -524,7 +655,7 @@
       <span style="line-height:1.05;">
         <img class="for-dark" src="assets/atalaia-wordmark-light.png" alt="ATALAIA" width="112" height="16">
         <img class="for-light" src="assets/atalaia-wordmark-dark.png" alt="ATALAIA" width="112" height="16">
-        <span class="eyebrow" style="display:block;margin:6px 0 0;color:var(--accent-text);font-size:.58rem;">Terceirização do Departamento Fiscal</span>
+        <span class="eyebrow" style="display:block;margin:6px 0 0;color:var(--accent-text);font-size:.58rem;">Departamentos Fiscal e Contábil</span>
       </span>
     </a>
 
@@ -532,9 +663,9 @@
     <nav class="nav-desktop" style="display:none;gap:22px;align-items:center;">
       <a href="#quem-somos" style="color:rgba(var(--on-surface-rgb),.75);text-decoration:none;font-size:.9rem;font-weight:600;">Quem somos</a>
       <a href="#servicos" style="color:rgba(var(--on-surface-rgb),.75);text-decoration:none;font-size:.9rem;font-weight:600;">Serviços</a>
-      <a href="#diferenciais" style="color:rgba(var(--on-surface-rgb),.75);text-decoration:none;font-size:.9rem;font-weight:600;">Diferenciais</a>
       <a href="#como-funciona" style="color:rgba(var(--on-surface-rgb),.75);text-decoration:none;font-size:.9rem;font-weight:600;">Como funciona</a>
-      <a href="#diagnostico" style="color:rgba(var(--on-surface-rgb),.75);text-decoration:none;font-size:.9rem;font-weight:600;">Autodiagnóstico</a>
+      <a href="#proposta" style="color:rgba(var(--on-surface-rgb),.75);text-decoration:none;font-size:.9rem;font-weight:600;">Proposta</a>
+      <a href="#checklist" style="color:rgba(var(--on-surface-rgb),.75);text-decoration:none;font-size:.9rem;font-weight:600;">Checklist</a>
     </nav>
 
     <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Alternar modo claro">
@@ -556,22 +687,22 @@
     <div style="display:flex;align-items:center;gap:14px;margin-bottom:28px;" class="reveal">
       <img class="logo-mark for-dark" src="assets/atalaia-icon-light.png" alt="" width="36" height="28">
       <img class="logo-mark for-light" src="assets/atalaia-icon-dark.png" alt="" width="36" height="28">
-      <p class="eyebrow" style="color:var(--accent-text);margin:0;">Departamento Fiscal Terceirizado para Escritórios de Contabilidade</p>
+      <p class="eyebrow" style="color:var(--accent-text);margin:0;">Departamentos Fiscal e Contábil terceirizados para escritórios de contabilidade</p>
     </div>
 
-    <h1 class="reveal word-reveal" style="font-size:clamp(2.2rem,5vw,3.6rem);max-width:800px;">
-      <span class="word"><span class="word-inner">Terceirização</span></span> <span class="word"><span class="word-inner">do</span></span> <span class="word"><span class="word-inner">Departamento</span></span> <span class="word"><span class="word-inner">Fiscal</span></span> <span class="word"><span class="word-inner">para</span></span> <span class="word"><span class="word-inner">contadores.</span></span>
+    <h1 class="reveal word-reveal" style="font-size:clamp(2.1rem,4.6vw,3.3rem);max-width:800px;">
+      <span class="word"><span class="word-inner">Terceirização</span></span> <span class="word"><span class="word-inner">dos</span></span> <span class="word"><span class="word-inner">Departamentos</span></span> <span class="word"><span class="word-inner">Fiscal</span></span> <span class="word"><span class="word-inner">e</span></span> <span class="word"><span class="word-inner">Contábil</span></span> <span class="word"><span class="word-inner">para</span></span> <span class="word"><span class="word-inner">contadores.</span></span>
       <span class="font-wide" style="display:block;font-weight:300;color:var(--accent-strong);font-size:.36em;margin-top:22px;letter-spacing:.14em;text-transform:uppercase;">No prazo. Sem multa.</span>
     </h1>
 
     <p class="reveal lede" style="font-size:1.14rem;margin-top:26px;">
-      Assumimos a rotina fiscal completa dos clientes do seu escritório, apurações e obrigações acessórias,
-      dentro do seu próprio sistema. <strong style="color:var(--on-surface);">Você mantém 100% do controle da
+      Assumimos a rotina fiscal e contábil completa dos clientes do seu escritório, das apurações e lançamentos
+      às obrigações acessórias, dentro do seu próprio sistema. <strong style="color:var(--on-surface);">Você mantém 100% do controle da
       carteira, da marca e do relacionamento com o cliente.</strong>
     </p>
 
     <div class="reveal" style="display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin-top:38px;">
-      <a class="btn btn-magnet" href="https://wa.me/5562982610788?text=Ol%C3%A1!%20Quero%20terceirizar%20o%20Departamento%20Fiscal%20do%20meu%20escrit%C3%B3rio." target="_blank" rel="noopener">
+      <a class="btn btn-magnet" href="https://wa.me/5562982610788?text=Ol%C3%A1!%20Quero%20terceirizar%20os%20Departamentos%20Fiscal%20e%20Cont%C3%A1bil%20do%20meu%20escrit%C3%B3rio." target="_blank" rel="noopener">
         <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 2.003c-5.514 0-9.997 4.483-9.997 9.997 0 1.762.462 3.48 1.34 4.997L2 22l5.132-1.345a9.96 9.96 0 0 0 4.872 1.242h.004c5.514 0 9.997-4.483 9.997-9.997 0-2.671-1.04-5.182-2.929-7.072a9.937 9.937 0 0 0-7.072-2.925zm0 18.187h-.003a8.184 8.184 0 0 1-4.17-1.143l-.299-.177-3.046.799.813-2.97-.194-.305a8.173 8.173 0 0 1-1.256-4.394c0-4.523 3.68-8.203 8.206-8.203a8.15 8.15 0 0 1 5.8 2.406 8.15 8.15 0 0 1 2.4 5.802c-.001 4.524-3.681 8.205-8.251 8.205z"/></svg>
         Falar com a Atalaia no WhatsApp
       </a>
@@ -587,7 +718,7 @@
       <div>
         <p class="stat-num" data-countup="52" data-suffix="%">0%</p>
         <div class="meter"><i style="--w:52%"></i></div>
-        <p class="stat-label">rotatividade média de analistas fiscais / ano</p>
+        <p class="stat-label">rotatividade média de analistas / ano</p>
       </div>
     </div>
   </div>
@@ -624,19 +755,19 @@
     </svg>
     <div class="orbit outer">
       <span class="orbit-item" style="--a:0deg"><span class="orbit-chip">Simples Nacional</span></span>
-      <span class="orbit-item" style="--a:60deg"><span class="orbit-chip">EFD-REINF</span></span>
-      <span class="orbit-item" style="--a:120deg"><span class="orbit-chip">Lucro Presumido</span></span>
-      <span class="orbit-item" style="--a:180deg"><span class="orbit-chip">EFD-Contribuições</span></span>
-      <span class="orbit-item" style="--a:240deg"><span class="orbit-chip">ISSQN</span></span>
-      <span class="orbit-item" style="--a:300deg"><span class="orbit-chip">Retenções federais</span></span>
+      <span class="orbit-item" style="--a:60deg"><span class="orbit-chip">Lucro Presumido</span></span>
+      <span class="orbit-item" style="--a:120deg"><span class="orbit-chip">SPED ICMS</span></span>
+      <span class="orbit-item" style="--a:180deg"><span class="orbit-chip">EFD Contribuições</span></span>
+      <span class="orbit-item" style="--a:240deg"><span class="orbit-chip">Balanço patrimonial</span></span>
+      <span class="orbit-item" style="--a:300deg"><span class="orbit-chip">Conciliação de contas</span></span>
     </div>
     <div class="orbit inner">
       <span class="orbit-item" style="--a:30deg"><span class="orbit-chip">PGDAS</span></span>
       <span class="orbit-item" style="--a:90deg"><span class="orbit-chip">DIFAL</span></span>
-      <span class="orbit-item" style="--a:150deg"><span class="orbit-chip">SEDIF</span></span>
-      <span class="orbit-item" style="--a:210deg"><span class="orbit-chip">DEFIS</span></span>
-      <span class="orbit-item" style="--a:270deg"><span class="orbit-chip">DCTF</span></span>
-      <span class="orbit-item" style="--a:330deg"><span class="orbit-chip">ECF</span></span>
+      <span class="orbit-item" style="--a:150deg"><span class="orbit-chip">DEFIS</span></span>
+      <span class="orbit-item" style="--a:210deg"><span class="orbit-chip">ECD</span></span>
+      <span class="orbit-item" style="--a:270deg"><span class="orbit-chip">ECF</span></span>
+      <span class="orbit-item" style="--a:330deg"><span class="orbit-chip">DRE</span></span>
     </div>
   </div>
   </div>
@@ -648,18 +779,18 @@
     <div class="reveal">
       <div class="head head-left" style="margin-bottom:26px;">
         <p class="eyebrow" style="color:var(--steel-deep);">Quem é a Atalaia</p>
-        <h2 style="color:var(--navy);">O Departamento Fiscal terceirizado do seu escritório de contabilidade.</h2>
+        <h2 style="color:var(--navy);">O Departamento Fiscal e Contábil terceirizado do seu escritório de contabilidade.</h2>
       </div>
 
       <p class="lede" style="max-width:100%;">
-        Assumimos a rotina fiscal completa dos clientes do seu escritório, das apurações às obrigações
-        acessórias, com prazos e responsabilidade técnica de um time especializado. Trabalhamos
+        Assumimos a rotina fiscal e contábil completa dos seus clientes, das apurações e lançamentos às
+        obrigações acessórias, com prazos e responsabilidade técnica de um time especializado. Trabalhamos
         <strong style="color:var(--ink);">nos bastidores, dentro do seu próprio sistema</strong>. A carteira,
         a marca e o relacionamento com o cliente continuam sendo seus.
       </p>
 
       <div class="quote">
-        <p>&ldquo;Cuidamos do fiscal dos seus clientes com o mesmo compromisso que você tem com o nome do seu escritório.&rdquo;</p>
+        <p>&ldquo;Cuidamos do fiscal e do contábil dos seus clientes com o mesmo compromisso que você tem com o nome do seu escritório.&rdquo;</p>
         <cite class="eyebrow" style="color:var(--accent-text);">Atalaia Assessoria e Gestão Empresarial</cite>
       </div>
     </div>
@@ -675,6 +806,14 @@
       </div>
     </div>
   </div>
+  <div class="wrap">
+    <div class="reveal values">
+      <div class="value"><p class="value-k">Vigilância</p><p>Sempre atentos aos prazos, às mudanças de legislação e ao que acontece com cada CNPJ.</p></div>
+      <div class="value"><p class="value-k">Segurança</p><p>Confiança em cada processo, com responsabilidade técnica pelas entregas.</p></div>
+      <div class="value"><p class="value-k">Estrutura</p><p>Suporte para o seu crescimento sem contratar e treinar novos analistas.</p></div>
+      <div class="value"><p class="value-k">Clareza</p><p>Informação com transparência: você sabe o que foi feito e quando.</p></div>
+    </div>
+  </div>
 </section>
 
 <!-- ============ SERVIÇOS / ENTREGAS ============ -->
@@ -682,34 +821,54 @@
   <div class="wrap">
     <div class="head reveal">
       <p class="eyebrow" style="color:var(--accent-text);">O que entregamos</p>
-      <h2>Terceirização fiscal completa: Simples Nacional e Lucro Presumido.</h2>
-      <p class="lede" style="margin-top:18px;">Tudo dentro do prazo e sob responsabilidade técnica de um time dedicado às apurações e obrigações acessórias do seu escritório.</p>
+      <h2>Fiscal e Contábil completos, dentro do seu sistema.</h2>
+      <p class="lede" style="margin-top:18px;">Simples Nacional e Lucro Presumido, comércio e serviço. Tudo dentro do prazo e sob responsabilidade técnica de um time dedicado.</p>
     </div>
 
-    <div class="reveal svc-grid">
-      <div class="svc"><span class="svc-n">01</span><span class="svc-t">Apuração Simples Nacional</span></div>
-      <div class="svc"><span class="svc-n">02</span><span class="svc-t">Apuração PGDAS</span></div>
-      <div class="svc"><span class="svc-n">03</span><span class="svc-t">Declaração SEDIF</span></div>
-      <div class="svc"><span class="svc-n">04</span><span class="svc-t">Retenções federais mensais</span></div>
-      <div class="svc"><span class="svc-n">05</span><span class="svc-t">EFD-REINF (mensal)</span></div>
-      <div class="svc"><span class="svc-n">06</span><span class="svc-t">EFD-Contribuições (mensal)</span></div>
-      <div class="svc"><span class="svc-n">07</span><span class="svc-t">Apuração fiscal Lucro Presumido</span></div>
-      <div class="svc"><span class="svc-n">08</span><span class="svc-t">Diferencial de alíquota (DIFAL)</span></div>
-      <div class="svc"><span class="svc-n">09</span><span class="svc-t">Elaboração DEFIS</span></div>
-      <div class="svc"><span class="svc-n">10</span><span class="svc-t">Declaração de ISSQN</span></div>
-      <div class="svc"><span class="svc-n">11</span><span class="svc-t">Elaboração mensal DCTF</span></div>
-      <div class="svc"><span class="svc-n">12</span><span class="svc-t">Elaboração anual ECF</span></div>
+    <div class="reveal" data-tabs>
+      <div class="tabs-wrap"><div class="tabs" role="tablist" aria-label="Departamentos">
+        <button class="tab" role="tab" id="tab-fiscal" aria-selected="true" aria-controls="pane-fiscal">Departamento Fiscal</button>
+        <button class="tab" role="tab" id="tab-contabil" aria-selected="false" aria-controls="pane-contabil" tabindex="-1">Departamento Contábil</button>
+      </div></div>
+      <div class="svc-grid" role="tabpanel" id="pane-fiscal" aria-labelledby="tab-fiscal">
+        <div class="svc"><span class="svc-n">01</span><span class="svc-t">Apuração Simples Nacional</span></div>
+        <div class="svc"><span class="svc-n">02</span><span class="svc-t">Apuração PGDAS</span></div>
+        <div class="svc"><span class="svc-n">03</span><span class="svc-t">Apuração Lucro Presumido</span></div>
+        <div class="svc"><span class="svc-n">04</span><span class="svc-t">Apuração ICMS</span></div>
+        <div class="svc"><span class="svc-n">05</span><span class="svc-t">Apuração ISS</span></div>
+        <div class="svc"><span class="svc-n">06</span><span class="svc-t">Apuração PIS e COFINS</span></div>
+        <div class="svc"><span class="svc-n">07</span><span class="svc-t">Diferencial de alíquota (DIFAL)</span></div>
+        <div class="svc"><span class="svc-n">08</span><span class="svc-t">Retenções federais</span></div>
+        <div class="svc"><span class="svc-n">09</span><span class="svc-t">Importação de XML</span></div>
+        <div class="svc"><span class="svc-n">10</span><span class="svc-t">DEFIS anual</span></div>
+        <div class="svc"><span class="svc-n">11</span><span class="svc-t">EFD-REINF</span></div>
+        <div class="svc"><span class="svc-n">12</span><span class="svc-t">SPED ICMS e EFD Contribuições</span></div>
+      </div>
+      <div class="svc-grid" role="tabpanel" id="pane-contabil" aria-labelledby="tab-contabil" hidden>
+        <div class="svc"><span class="svc-n">01</span><span class="svc-t">Lançamentos contábeis</span></div>
+        <div class="svc"><span class="svc-n">02</span><span class="svc-t">Integração fiscal</span></div>
+        <div class="svc"><span class="svc-n">03</span><span class="svc-t">Integração patrimonial</span></div>
+        <div class="svc"><span class="svc-n">04</span><span class="svc-t">Integração do departamento pessoal</span></div>
+        <div class="svc"><span class="svc-n">05</span><span class="svc-t">Importação de extratos bancários</span></div>
+        <div class="svc"><span class="svc-n">06</span><span class="svc-t">Conciliação de contas</span></div>
+        <div class="svc"><span class="svc-n">07</span><span class="svc-t">Balancete e DRE</span></div>
+        <div class="svc"><span class="svc-n">08</span><span class="svc-t">Balanço patrimonial</span></div>
+        <div class="svc"><span class="svc-n">09</span><span class="svc-t">Depreciações e amortizações</span></div>
+        <div class="svc"><span class="svc-n">10</span><span class="svc-t">Livros Diário e Razão</span></div>
+        <div class="svc"><span class="svc-n">11</span><span class="svc-t">Envio ECF</span></div>
+        <div class="svc"><span class="svc-n">12</span><span class="svc-t">Envio ECD</span></div>
+      </div>
     </div>
 
     <p class="reveal" style="margin-top:40px;font-size:.9rem;color:rgba(var(--on-surface-rgb),.45);max-width:640px;">
-      Simples Nacional (comércio e serviço) e Lucro Presumido (serviço). Para escopos específicos ou volumes maiores, montamos uma proposta sob medida para o seu escritório.
+      Contrate só o Fiscal, só o Contábil ou os dois. Para grupos maiores ou escopos específicos, montamos um orçamento personalizado.
     </p>
   </div>
 
   <div class="marquee" style="margin-top:56px;">
     <div class="marquee-track">
-      <span>PGDAS</span><span>DIFAL</span><span>SEDIF</span><span>DEFIS</span><span>ISSQN</span><span>EFD-REINF</span><span>EFD-CONTRIBUIÇÕES</span><span>DCTF</span><span>ECF</span><span>SIMPLES NACIONAL</span><span>LUCRO PRESUMIDO</span>
-      <span aria-hidden="true">PGDAS</span><span aria-hidden="true">DIFAL</span><span aria-hidden="true">SEDIF</span><span aria-hidden="true">DEFIS</span><span aria-hidden="true">ISSQN</span><span aria-hidden="true">EFD-REINF</span><span aria-hidden="true">EFD-CONTRIBUIÇÕES</span><span aria-hidden="true">DCTF</span><span aria-hidden="true">ECF</span><span aria-hidden="true">SIMPLES NACIONAL</span><span aria-hidden="true">LUCRO PRESUMIDO</span>
+      <span>PGDAS</span><span>DIFAL</span><span>ICMS</span><span>ISS</span><span>PIS E COFINS</span><span>EFD-REINF</span><span>SPED ICMS</span><span>EFD CONTRIBUIÇÕES</span><span>DEFIS</span><span>BALANCETE</span><span>DRE</span><span>CONCILIAÇÃO</span><span>ECD</span><span>ECF</span>
+      <span aria-hidden="true">PGDAS</span><span aria-hidden="true">DIFAL</span><span aria-hidden="true">ICMS</span><span aria-hidden="true">ISS</span><span aria-hidden="true">PIS E COFINS</span><span aria-hidden="true">EFD-REINF</span><span aria-hidden="true">SPED ICMS</span><span aria-hidden="true">EFD CONTRIBUIÇÕES</span><span aria-hidden="true">DEFIS</span><span aria-hidden="true">BALANCETE</span><span aria-hidden="true">DRE</span><span aria-hidden="true">CONCILIAÇÃO</span><span aria-hidden="true">ECD</span><span aria-hidden="true">ECF</span>
     </div>
   </div>
 </section>
@@ -742,14 +901,14 @@
           <span class="mark">✓</span>
           <div>
             <p class="txt-title">Um time inteiro por trás</p>
-            <p class="txt-desc">Não é uma pessoa só cuidando de tudo. É um time dedicado a apurações e obrigações fiscais, com backup e continuidade garantidos.</p>
+            <p class="txt-desc">Não é uma pessoa só cuidando de tudo. É um time dedicado ao fiscal e ao contábil, com backup e continuidade garantidos.</p>
           </div>
         </div>
         <div class="row card-tilt">
           <span class="mark">✓</span>
           <div>
             <p class="txt-title">Suporte direto</p>
-            <p class="txt-desc">WhatsApp, ligação ou e-mail, direto com quem cuida do fiscal dos seus clientes. Você nunca fica sem retorno na hora que mais precisa.</p>
+            <p class="txt-desc">WhatsApp, ligação ou e-mail, direto com quem cuida do fiscal e do contábil dos seus clientes. Você nunca fica sem retorno na hora que mais precisa.</p>
           </div>
         </div>
       </div>
@@ -757,9 +916,9 @@
       <div class="reveal stat-ring-card">
         <p class="eyebrow" style="color:var(--steel-deep);">Rotatividade média ao ano</p>
         <span class="stat-big" data-countup="52" data-suffix="%">0%</span>
-        <div class="mark-grid" data-fill="52" role="img" aria-label="De cada 100 analistas fiscais, 52 trocam de emprego por ano"></div>
+        <div class="mark-grid" data-fill="52" role="img" aria-label="De cada 100 analistas, 52 trocam de emprego por ano"></div>
         <p class="mark-legend"><span><i class="on"></i>saem no ano</span><span><i></i>permanecem</span></p>
-        <p style="color:var(--ink-soft);line-height:1.6;margin-top:12px;">Analistas fiscais internos trocam de emprego com frequência. Cada saída significa retreinar alguém do zero, com risco de multa no meio do caminho. Isso deixa de ser problema seu.</p>
+        <p style="color:var(--ink-soft);line-height:1.6;margin-top:12px;">Analistas internos trocam de emprego com frequência. Cada saída significa retreinar alguém do zero, com risco de multa no meio do caminho. Isso deixa de ser problema seu.</p>
       </div>
     </div>
   </div>
@@ -770,67 +929,64 @@
   <div class="wrap">
     <div class="head reveal">
       <p class="eyebrow" style="color:var(--accent-text);">Como funciona</p>
-      <h2>Quatro passos, do início ao suporte contínuo.</h2>
+      <h2>Três passos, do primeiro acesso ao suporte contínuo.</h2>
     </div>
 
     <div class="reveal steps">
       <div class="step">
         <div class="step-num">01</div>
-        <h3>Usamos o seu sistema</h3>
-        <p>Login em sistemas web ou acesso remoto, dentro da sua própria estrutura. Você mantém o controle.</p>
+        <h3>Usamos o seu sistema contábil</h3>
+        <p>Login em sistemas web ou acesso remoto. Você mantém o controle e os dados continuam no seu ambiente.</p>
       </div>
       <div class="step">
         <div class="step-num">02</div>
-        <h3>Conferência inicial</h3>
-        <p>Revisamos as apurações e obrigações do período assim que assumimos a carteira.</p>
+        <h3>Conferência inicial imediata</h3>
+        <p>Revisamos as apurações, lançamentos e obrigações do período assim que assumimos.</p>
       </div>
       <div class="step">
         <div class="step-num">03</div>
-        <h3>Rotina mensal no prazo</h3>
-        <p>Apuramos e transmitimos todas as obrigações dentro do prazo, todos os meses.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">04</div>
-        <h3>Suporte contínuo</h3>
-        <p>WhatsApp, ligação ou e-mail, direto com o time que cuida do seu fiscal.</p>
+        <h3>Suporte</h3>
+        <p>WhatsApp, ligação ou e-mail. Resposta em até 5 horas em dias úteis.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ AUTODIAGNÓSTICO ============ -->
+<!-- ============ DIFICULDADES x BENEFÍCIOS ============ -->
 <section id="diagnostico" class="on-navy" style="background:var(--surface-2);color:var(--on-surface);">
   <div class="wrap">
     <div class="head reveal">
-      <p class="eyebrow" style="color:var(--accent-text);">Autodiagnóstico</p>
-      <h2>Sinais de que seu escritório precisa terceirizar o fiscal.</h2>
-      <p class="lede" style="margin-top:18px;">Marque mentalmente quantos itens fazem parte da sua rotina hoje.</p>
+      <p class="eyebrow" style="color:var(--accent-text);">Dificuldades x benefícios</p>
+      <h2>O que a terceirização resolve no seu escritório.</h2>
+      <p class="lede" style="margin-top:18px;">Marque as dificuldades que fazem parte da sua rotina e veja como a Atalaia resolve cada uma.</p>
     </div>
 
-    <div class="reveal" style="display:grid;grid-template-columns:1fr;gap:40px;">
-      <div class="rows">
-        <div class="row"><span class="mark">1</span><span class="txt-title" style="font-weight:500;">Multas por atraso nas obrigações acessórias.</span></div>
-        <div class="row"><span class="mark">2</span><span class="txt-title" style="font-weight:500;">Dependência de uma única pessoa para tocar todo o fiscal.</span></div>
-        <div class="row"><span class="mark">3</span><span class="txt-title" style="font-weight:500;">Dificuldade de acompanhar a legislação em constante mudança.</span></div>
-        <div class="row"><span class="mark">4</span><span class="txt-title" style="font-weight:500;">Malha nos SPEDs por inconsistências de escrituração.</span></div>
-        <div class="row"><span class="mark">5</span><span class="txt-title" style="font-weight:500;">Falta de tempo para orientar o cliente como consultor.</span></div>
-        <div class="row" style="border-bottom:none;"><span class="mark">6</span><span class="txt-title" style="font-weight:500;">Sensação de viver "apagando incêndio" todos os meses.</span></div>
+    <div class="reveal pains-grid">
+      <div>
+        <p class="eyebrow" style="color:var(--accent-text);">Principais dificuldades</p>
+        <button type="button" class="pain" data-b="custo" aria-pressed="false"><span class="pain-box"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Alto custo de contratação x conhecimento.</button>
+        <button type="button" class="pain" data-b="especialistas" aria-pressed="false"><span class="pain-box"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Rotatividade de funcionários.</button>
+        <button type="button" class="pain" data-b="eficiencia" aria-pressed="false"><span class="pain-box"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Adaptação em sistemas contábeis.</button>
+        <button type="button" class="pain" data-b="especialistas" aria-pressed="false"><span class="pain-box"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Acompanhamento das legislações e normas fiscais e contábeis.</button>
+        <button type="button" class="pain" data-b="seguranca" aria-pressed="false"><span class="pain-box"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Inconsistências dos SPEDs.</button>
+        <button type="button" class="pain" data-b="multa" aria-pressed="false"><span class="pain-box"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Multas por atraso na entrega das declarações.</button>
+        <button type="button" class="pain" data-b="foco" aria-pressed="false"><span class="pain-box"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>Comunicação insuficiente com os clientes.</button>
       </div>
-
-      <div class="callout">
-        <p>Reconheceu 3 ou mais sinais?</p>
-        <p class="body">É hora de terceirizar o Departamento Fiscal do seu escritório. Quanto mais cedo, menor o risco de multa e retrabalho.</p>
-        <a href="https://wa.me/5562982610788?text=Ol%C3%A1!%20Reconheci%20v%C3%A1rios%20sinais%20do%20autodiagn%C3%B3stico%20e%20quero%20saber%20mais%20sobre%20a%20terceiriza%C3%A7%C3%A3o%20fiscal." target="_blank" rel="noopener">Quero terceirizar agora</a>
+      <div>
+        <p class="eyebrow" style="color:var(--accent-text);">Benefícios da terceirização</p>
+        <p class="pains-note" id="pains-note" aria-live="polite">Tudo o que o seu escritório ganha ao terceirizar o fiscal e o contábil.</p>
+        <div class="benefits">
+          <div class="benefit" data-b="foco"><h3>Foco no core business</h3><p>Sua equipe volta a atenção para consultoria e para os clientes.</p><span class="resolve">Resolve: comunicação com os clientes</span></div>
+          <div class="benefit" data-b="custo"><h3>Ganho de tempo e redução de gastos</h3><p>Menos custo do que manter analistas internos.</p><span class="resolve">Resolve: custo de contratação</span></div>
+          <div class="benefit" data-b="eficiencia"><h3>Mais eficiência e produtividade</h3><p>Trabalhamos no seu sistema, com processos de quem é especialista.</p><span class="resolve">Resolve: adaptação em sistemas</span></div>
+          <div class="benefit" data-b="especialistas"><h3>Especialistas à sua disposição</h3><p>Time dedicado e atualizado, sem depender de um analista só.</p><span class="resolve">Resolve: rotatividade e legislação</span></div>
+          <div class="benefit" data-b="seguranca"><h3>Segurança nas entregas</h3><p>Tudo no prazo, sob responsabilidade técnica.</p><span class="resolve">Resolve: inconsistências dos SPEDs</span></div>
+          <div class="benefit" data-b="multa"><h3>Nunca mais pagar multa</h3><p>Obrigações entregues dentro dos vencimentos.</p><span class="resolve">Resolve: multas por atraso</span></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
-
-<style>
-  @media (min-width: 860px){
-    #diagnostico .reveal{ grid-template-columns: 1.15fr .85fr !important; align-items:start; }
-  }
-</style>
 
 <!-- ============ MITOS X VERDADES ============ -->
 <section class="horizon" style="background:var(--mist);--prev:var(--surface-2);">
@@ -868,7 +1024,7 @@
         </div>
         <div>
           <p class="eyebrow mv-label" style="color:var(--steel-deep);">Verdade</p>
-          <p class="truth-txt">Começamos pelo escopo que você precisa, do primeiro CNPJ em diante, sem exigir volume mínimo.</p>
+          <p class="truth-txt">A partir de 10 CNPJs você já terceiriza, escolhendo só o Fiscal, só o Contábil ou os dois.</p>
         </div>
       </div>
       <div class="mv-row">
@@ -885,20 +1041,124 @@
   </div>
 </section>
 
+<!-- ============ MONTE SUA PROPOSTA ============ -->
+<section id="proposta" class="on-navy horizon" style="--prev:var(--mist);background:var(--surface-1);color:var(--on-surface);">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="eyebrow" style="color:var(--accent-text);">Investimento</p>
+      <h2>Monte a sua proposta.</h2>
+      <p class="lede" style="margin-top:18px;">O honorário é mensal, por CNPJ, e varia com o regime e a atividade de cada empresa. Conte quantas empresas você quer terceirizar e receba a proposta.</p>
+    </div>
+
+    <div class="reveal calc">
+      <div class="calc-card">
+        <p class="eyebrow" style="color:var(--accent-text);">Departamentos</p>
+        <div class="seg" role="group" aria-label="Departamentos">
+          <button type="button" data-d="Fiscal" aria-pressed="true">Fiscal</button>
+          <button type="button" data-d="Contábil" aria-pressed="false">Contábil</button>
+          <button type="button" data-d="Fiscal + Contábil" aria-pressed="false">Fiscal + Contábil</button>
+        </div>
+        <p class="eyebrow" style="color:var(--accent-text);margin-top:26px;">Empresas por regime e atividade</p>
+        <div class="calc-row">
+          <span class="calc-reg"><b>Simples Nacional</b><small>Serviço</small></span>
+          <span class="qty"><button type="button" data-q="sn_servico" data-step="-1" aria-label="Remover empresa de Simples Nacional, serviço">&minus;</button><input type="number" min="0" value="0" inputmode="numeric" id="q-sn_servico" aria-label="Empresas do Simples Nacional, serviço"><button type="button" data-q="sn_servico" data-step="1" aria-label="Adicionar empresa de Simples Nacional, serviço">+</button></span>
+        </div>
+        <div class="calc-row">
+          <span class="calc-reg"><b>Simples Nacional</b><small>Comércio</small></span>
+          <span class="qty"><button type="button" data-q="sn_comercio" data-step="-1" aria-label="Remover empresa de Simples Nacional, comércio">&minus;</button><input type="number" min="0" value="0" inputmode="numeric" id="q-sn_comercio" aria-label="Empresas do Simples Nacional, comércio"><button type="button" data-q="sn_comercio" data-step="1" aria-label="Adicionar empresa de Simples Nacional, comércio">+</button></span>
+        </div>
+        <div class="calc-row">
+          <span class="calc-reg"><b>Lucro Presumido</b><small>Serviço</small></span>
+          <span class="qty"><button type="button" data-q="lp_servico" data-step="-1" aria-label="Remover empresa de Lucro Presumido, serviço">&minus;</button><input type="number" min="0" value="0" inputmode="numeric" id="q-lp_servico" aria-label="Empresas do Lucro Presumido, serviço"><button type="button" data-q="lp_servico" data-step="1" aria-label="Adicionar empresa de Lucro Presumido, serviço">+</button></span>
+        </div>
+        <div class="calc-row">
+          <span class="calc-reg"><b>Lucro Presumido</b><small>Comércio</small></span>
+          <span class="qty"><button type="button" data-q="lp_comercio" data-step="-1" aria-label="Remover empresa de Lucro Presumido, comércio">&minus;</button><input type="number" min="0" value="0" inputmode="numeric" id="q-lp_comercio" aria-label="Empresas do Lucro Presumido, comércio"><button type="button" data-q="lp_comercio" data-step="1" aria-label="Adicionar empresa de Lucro Presumido, comércio">+</button></span>
+        </div>
+      </div>
+
+      <div class="calc-card calc-summary">
+        <p class="eyebrow" style="color:var(--accent-text);">Sua proposta</p>
+        <p class="calc-total"><span id="calc-n">0</span><small> empresas</small></p>
+        <p class="calc-dep" id="calc-dep">Departamento Fiscal</p>
+        <div class="calc-lines" id="calc-lines"><div class="empty">Adicione empresas para montar a proposta.</div></div>
+        <p class="calc-min" id="calc-min">Contratação a partir de 10 CNPJs. Para grupos maiores, montamos um orçamento personalizado.</p>
+        <a class="btn" id="calc-send" href="https://wa.me/5562982610788" target="_blank" rel="noopener">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 2.003c-5.514 0-9.997 4.483-9.997 9.997 0 1.762.462 3.48 1.34 4.997L2 22l5.132-1.345a9.96 9.96 0 0 0 4.872 1.242h.004c5.514 0 9.997-4.483 9.997-9.997 0-2.671-1.04-5.182-2.929-7.072a9.937 9.937 0 0 0-7.072-2.925zm0 18.187h-.003a8.184 8.184 0 0 1-4.17-1.143l-.299-.177-3.046.799.813-2.97-.194-.305a8.173 8.173 0 0 1-1.256-4.394c0-4.523 3.68-8.203 8.206-8.203a8.15 8.15 0 0 1 5.8 2.406 8.15 8.15 0 0 1 2.4 5.802c-.001 4.524-3.681 8.205-8.251 8.205z"/></svg>
+          Receber proposta no WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ CTA FINAL ============ -->
-<section class="on-navy horizon" style="--prev:var(--mist);background:var(--surface-2);color:var(--on-surface);">
+<section class="on-navy" style="background:var(--surface-2);color:var(--on-surface);">
   <div class="wrap reveal" style="text-align:center;max-width:740px;margin:0 auto;">
-    <h2 style="font-size:clamp(1.8rem,4vw,2.9rem);">Tire o fiscal dos seus clientes das suas costas, sem perder <span class="shine-text">o controle da carteira</span>.</h2>
+    <h2 style="font-size:clamp(1.8rem,4vw,2.9rem);">Tire o fiscal e o contábil dos seus clientes das suas costas, sem perder <span class="shine-text">o controle da carteira</span>.</h2>
     <p style="font-size:1.08rem;line-height:1.7;color:rgba(var(--on-surface-rgb),.65);margin:22px auto 0;max-width:540px;">
-      Quanto antes o fiscal do seu escritório estiver nas mãos de um time dedicado, menor o risco de multa, retrabalho e desgaste com os seus clientes.
+      Quanto antes o fiscal e o contábil do seu escritório estiverem nas mãos de um time dedicado, menor o risco de multa, retrabalho e desgaste com os seus clientes.
     </p>
     <div style="margin-top:38px;">
-      <a class="btn btn-magnet" style="padding:18px 32px;font-size:1.02rem;" href="https://wa.me/5562982610788?text=Ol%C3%A1!%20Quero%20terceirizar%20o%20Departamento%20Fiscal%20do%20meu%20escrit%C3%B3rio%20com%20a%20Atalaia." target="_blank" rel="noopener">
+      <a class="btn btn-magnet" style="padding:18px 32px;font-size:1.02rem;" href="https://wa.me/5562982610788?text=Ol%C3%A1!%20Quero%20terceirizar%20os%20Departamentos%20Fiscal%20e%20Cont%C3%A1bil%20do%20meu%20escrit%C3%B3rio%20com%20a%20Atalaia." target="_blank" rel="noopener">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 2.003c-5.514 0-9.997 4.483-9.997 9.997 0 1.762.462 3.48 1.34 4.997L2 22l5.132-1.345a9.96 9.96 0 0 0 4.872 1.242h.004c5.514 0 9.997-4.483 9.997-9.997 0-2.671-1.04-5.182-2.929-7.072a9.937 9.937 0 0 0-7.072-2.925zm0 18.187h-.003a8.184 8.184 0 0 1-4.17-1.143l-.299-.177-3.046.799.813-2.97-.194-.305a8.173 8.173 0 0 1-1.256-4.394c0-4.523 3.68-8.203 8.206-8.203a8.15 8.15 0 0 1 5.8 2.406 8.15 8.15 0 0 1 2.4 5.802c-.001 4.524-3.681 8.205-8.251 8.205z"/></svg>
         Falar agora com a Atalaia
       </a>
       <p style="margin-top:16px;font-size:.85rem;color:rgba(var(--on-surface-rgb),.4);">Sem compromisso</p>
     </div>
+  </div>
+</section>
+
+<!-- ============ CHECKLIST DE INÍCIO ============ -->
+<section id="checklist" class="horizon" style="background:var(--mist);--prev:var(--surface-2);">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="eyebrow" style="color:var(--steel-deep);">Checklist de início</p>
+      <h2 style="color:var(--navy);">Já fechou com a Atalaia? Comece por aqui.</h2>
+      <p class="lede" style="margin-top:18px;">Responda o checklist para assumirmos a sua carteira sem surpresas. Suas respostas vão direto para a nossa equipe, e o rascunho fica salvo neste navegador até você enviar.</p>
+    </div>
+
+    <form class="ck" id="ck-form" novalidate>
+      <div class="ck-progress" aria-hidden="true">
+        <div class="ck-progress-top"><span>Progresso</span><span id="ck-count">0 de 0</span></div>
+        <div class="ck-bar"><i id="ck-bar"></i></div>
+      </div>
+
+      <div class="ck-alert" role="note">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <p><b>Não escreva senhas neste formulário.</b> Marque apenas se os acessos já estão prontos. Combinamos depois um canal seguro, como um cofre de senhas, para recebê-los.</p>
+      </div>
+
+      <div class="ck-group ck-open">
+        <div class="ck-head"><span class="ck-num">00</span><span>Dados do escritório</span></div>
+        <div class="ck-body">
+          <div class="grid-2">
+            <label class="field"><span>Nome do escritório *</span><input name="escritorio" required autocomplete="organization"></label>
+            <label class="field"><span>Responsável *</span><input name="responsavel" required autocomplete="name"></label>
+            <label class="field"><span>E-mail *</span><input name="email" type="email" required autocomplete="email"></label>
+            <label class="field"><span>WhatsApp</span><input name="whatsapp" type="tel" autocomplete="tel"></label>
+          </div>
+        </div>
+      </div>
+
+      <div id="ck-groups"></div>
+
+      <div id="ck-clients-wrap" class="ck-group ck-open">
+        <div class="ck-head"><span class="ck-num">B</span><span>Particularidades de cada cliente do escritório</span></div>
+        <div class="ck-body">
+          <p class="ck-hint">Adicione as empresas que têm algo fora do padrão. Se preferir, preencha as principais agora e envie o restante depois.</p>
+          <div id="ck-clients"></div>
+          <button type="button" class="btn-ghost" id="ck-add-client">+ Adicionar cliente</button>
+        </div>
+      </div>
+
+      <input type="text" name="_honey" class="ck-honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+      <div class="ck-submit">
+        <button type="submit" class="btn" id="ck-send">Enviar checklist</button>
+        <p class="ck-status" id="ck-status" role="status" aria-live="polite"></p>
+      </div>
+    </form>
   </div>
 </section>
 
@@ -911,7 +1171,7 @@
       <div>
         <img class="for-dark" src="assets/atalaia-wordmark-light.png" alt="ATALAIA" width="105" height="15">
         <img class="for-light" src="assets/atalaia-wordmark-dark.png" alt="ATALAIA" width="105" height="15">
-        <p class="eyebrow" style="margin:6px 0 0;color:var(--accent-text);font-size:.56rem;">Terceirização do Departamento Fiscal</p>
+        <p class="eyebrow" style="margin:6px 0 0;color:var(--accent-text);font-size:.56rem;">Departamentos Fiscal e Contábil</p>
       </div>
     </div>
 
@@ -921,7 +1181,7 @@
     </div>
 
     <p style="font-size:.78rem;color:rgba(var(--on-surface-rgb),.35);max-width:280px;margin:0;">
-      &copy; 2026 Atalaia Assessoria e Gestão Empresarial. Terceirização do Departamento Fiscal para escritórios de contabilidade.
+      &copy; 2026 Atalaia Assessoria e Gestão Empresarial. Terceirização dos Departamentos Fiscal e Contábil para escritórios de contabilidade.
     </p>
   </div>
   <img class="footer-mark for-dark" src="assets/atalaia-wordmark-light.png" alt="" aria-hidden="true" width="1054" height="150">
@@ -929,7 +1189,7 @@
 </footer>
 
 <!-- ============ FLOATING WHATSAPP (mobile) ============ -->
-<a href="https://wa.me/5562982610788?text=Ol%C3%A1!%20Quero%20terceirizar%20o%20Departamento%20Fiscal%20do%20meu%20escrit%C3%B3rio."
+<a href="https://wa.me/5562982610788?text=Ol%C3%A1!%20Quero%20terceirizar%20os%20Departamentos%20Fiscal%20e%20Cont%C3%A1bil%20do%20meu%20escrit%C3%B3rio."
    target="_blank" rel="noopener" class="fab-wa"
    style="position:fixed;bottom:20px;right:20px;z-index:50;width:54px;height:54px;border-radius:50%;background:var(--steel);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px -6px rgba(0,0,0,.45);">
   <svg width="25" height="25" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 2.003c-5.514 0-9.997 4.483-9.997 9.997 0 1.762.462 3.48 1.34 4.997L2 22l5.132-1.345a9.96 9.96 0 0 0 4.872 1.242h.004c5.514 0 9.997-4.483 9.997-9.997 0-2.671-1.04-5.182-2.929-7.072a9.937 9.937 0 0 0-7.072-2.925zm0 18.187h-.003a8.184 8.184 0 0 1-4.17-1.143l-.299-.177-3.046.799.813-2.97-.194-.305a8.173 8.173 0 0 1-1.256-4.394c0-4.523 3.68-8.203 8.206-8.203a8.15 8.15 0 0 1 5.8 2.406 8.15 8.15 0 0 1 2.4 5.802c-.001 4.524-3.681 8.205-8.251 8.205z"/></svg>
@@ -1043,6 +1303,372 @@
       btn.addEventListener('mouseleave', function(){
         btn.style.transform = '';
       });
+    });
+  }
+
+  // department tabs (arrow keys move between tabs)
+  document.querySelectorAll('[data-tabs]').forEach(function(root){
+    var tabs = [].slice.call(root.querySelectorAll('[role="tab"]'));
+    function select(tab){
+      tabs.forEach(function(t){
+        var on = t === tab;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+    }
+    tabs.forEach(function(t, i){
+      t.addEventListener('click', function(){ select(t); });
+      t.addEventListener('keydown', function(e){
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        var next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+        select(next); next.focus();
+      });
+    });
+  });
+
+  // difficulties highlight the benefits that solve them
+  var pains = [].slice.call(document.querySelectorAll('.pain'));
+  var benefitsBox = document.querySelector('.benefits');
+  var painsNote = document.getElementById('pains-note');
+  pains.forEach(function(p){
+    p.addEventListener('click', function(){
+      p.setAttribute('aria-pressed', p.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+      var on = pains.filter(function(x){ return x.getAttribute('aria-pressed') === 'true'; });
+      var keys = {};
+      on.forEach(function(x){ keys[x.getAttribute('data-b')] = true; });
+      benefitsBox.classList.toggle('filtering', on.length > 0);
+      benefitsBox.querySelectorAll('.benefit').forEach(function(b){ b.classList.toggle('hit', !!keys[b.getAttribute('data-b')]); });
+      painsNote.innerHTML = on.length
+        ? 'Você marcou <b>' + on.length + ' ' + (on.length === 1 ? 'dificuldade' : 'dificuldades') + '</b>. Em destaque, como a Atalaia resolve cada uma delas.'
+        : 'Tudo o que o seu escritório ganha ao terceirizar o fiscal e o contábil.';
+    });
+  });
+
+  // build-your-proposal: counts per regime, sent to WhatsApp (no prices on the page)
+  var REGIMES = [
+    ['sn_servico', 'Simples Nacional', 'serviço'],
+    ['sn_comercio', 'Simples Nacional', 'comércio'],
+    ['lp_servico', 'Lucro Presumido', 'serviço'],
+    ['lp_comercio', 'Lucro Presumido', 'comércio']
+  ];
+  var qty = { sn_servico:0, sn_comercio:0, lp_servico:0, lp_comercio:0 };
+  var department = 'Fiscal';
+  var segButtons = [].slice.call(document.querySelectorAll('.seg button'));
+
+  function renderProposal(){
+    var n = 0, lines = [], msg = [];
+    REGIMES.forEach(function(r){
+      var q = qty[r[0]];
+      n += q;
+      if (q) {
+        lines.push('<div><span>' + r[1] + ' (' + r[2] + ')</span><b>' + q + '</b></div>');
+        msg.push('- ' + q + ' ' + r[1] + ' (' + r[2] + ')');
+      }
+    });
+    document.getElementById('calc-n').textContent = n;
+    document.getElementById('calc-dep').textContent = department === 'Fiscal + Contábil' ? 'Departamentos Fiscal e Contábil' : 'Departamento ' + department;
+    document.getElementById('calc-lines').innerHTML = lines.length ? lines.join('') : '<div class="empty">Adicione empresas para montar a proposta.</div>';
+    var min = document.getElementById('calc-min');
+    var belowMin = n > 0 && n < 10;
+    min.classList.toggle('warn', belowMin);
+    min.textContent = belowMin
+      ? 'A contratação é a partir de 10 CNPJs. Fale com a gente para avaliarmos o seu caso.'
+      : 'Contratação a partir de 10 CNPJs. Para grupos maiores, montamos um orçamento personalizado.';
+    var text = 'Olá! Quero uma proposta da Atalaia.\nDepartamentos: ' + department + '\n' +
+      (msg.length ? msg.join('\n') + '\nTotal: ' + n + ' ' + (n === 1 ? 'empresa' : 'empresas') : 'Ainda vou levantar a quantidade de empresas.');
+    document.getElementById('calc-send').href = 'https://wa.me/5562982610788?text=' + encodeURIComponent(text);
+  }
+  function setQty(key, value){
+    qty[key] = Math.max(0, Math.min(9999, parseInt(value, 10) || 0));
+    document.getElementById('q-' + key).value = qty[key];
+    renderProposal();
+  }
+  document.querySelectorAll('.qty button').forEach(function(b){
+    b.addEventListener('click', function(){
+      var key = b.getAttribute('data-q');
+      setQty(key, qty[key] + parseInt(b.getAttribute('data-step'), 10));
+    });
+  });
+  REGIMES.forEach(function(r){
+    var input = document.getElementById('q-' + r[0]);
+    input.addEventListener('input', function(){ qty[r[0]] = Math.max(0, parseInt(input.value, 10) || 0); renderProposal(); });
+    input.addEventListener('blur', function(){ setQty(r[0], input.value); });
+  });
+  segButtons.forEach(function(b){
+    b.addEventListener('click', function(){
+      department = b.getAttribute('data-d');
+      segButtons.forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      renderProposal();
+    });
+  });
+  if (segButtons.length) renderProposal();
+
+  // ---------------- checklist: answers go by e-mail to contato@atalaiagestao.com
+  var CK_ENDPOINT = 'https://formsubmit.co/ajax/contato@atalaiagestao.com';
+  var CK_DRAFT_KEY = 'atalaia-checklist';
+  var CK_STATUS = ['Pronto', 'Pendente', 'Não se aplica'];
+  var CK_GROUPS = [
+    { n:'01', title:'Formalização entre o seu escritório e a Atalaia', items:[
+      'Contrato de terceirização com escopo claro (quais empresas, quais rotinas, a partir de qual competência)',
+      'Termo de confidencialidade (NDA)',
+      'Termo LGPD definindo a Atalaia como operadora dos dados e o seu escritório como controlador',
+      'Matriz de responsabilidades: o que fica com a Atalaia e o que continua com o seu escritório (ex.: quem envia guias ao cliente final, quem responde notificações, quem assina)',
+      'Prazos combinados (SLA): até quando a Atalaia recebe os documentos e até quando entrega',
+      'Regra para retrabalho e para documento enviado fora do prazo'
+    ]},
+    { n:'02', title:'Acessos ao servidor e à infraestrutura', items:[
+      'Acesso remoto ao servidor (VPN, RDP, AnyDesk, TeamViewer), com usuário próprio para a Atalaia, não compartilhado',
+      'Horários permitidos de acesso e contato do seu TI para quando o acesso cair',
+      'Pastas de rede ou nuvem onde ficam os arquivos (XMLs, extratos, folha, guias)',
+      'Padrão de nomenclatura e organização de pastas que vocês usam'
+    ]},
+    { n:'03', title:'Acessos a sistemas', items:[
+      'Usuário para a Atalaia no sistema contábil, fiscal e folha (Domínio, Alterdata, Questor, Fortes etc.) com os módulos e permissões necessários',
+      'Acesso à ferramenta de captura de XML e notas (SIEG, Arquivei, robôs próprios)',
+      'Acesso ao portal de comunicação com o cliente e gestão de tarefas (Onvio, Acessórias, Gclick, Trello etc.)',
+      'Certificados digitais: onde estão instalados, validade e se a Atalaia pode usar',
+      'Procurações e-CAC em nome do escritório, cobrindo os serviços que a Atalaia vai executar',
+      'Senhas de SEFAZ, prefeituras, Simples Nacional, eSocial e FGTS Digital de cada empresa organizadas, idealmente em cofre de senhas (não envie as senhas aqui)'
+    ]},
+    { n:'04', title:'Carteira que a Atalaia vai assumir', items:[
+      'Planilha com todas as empresas: razão social, CNPJ, regime, atividade, UF e município',
+      'Rotinas por empresa (fiscal, contábil, DP) e obrigações acessórias de cada uma',
+      'Competência de início e situação atual de cada empresa (em dia, atrasada, com pendência)',
+      'Contato interno responsável por cada empresa ou área'
+    ]}
+  ];
+  var CK_PART_A = [
+    { t:'Padrões de trabalho', qs:[
+      'Qual sistema e versão vocês usam? Tem parametrizações específicas que a Atalaia não pode alterar?',
+      'Existe plano de contas padrão? E histórico padrão de lançamentos?',
+      'Como querem a conciliação: nível de detalhe, periodicidade e formato?',
+      'Tem checklist ou POP interno que devemos seguir?'
+    ]},
+    { t:'Fluxo e comunicação', qs:[
+      'Como os documentos chegam até a Atalaia e como avisamos quando falta algo?',
+      'Podemos falar direto com o cliente final ou tudo passa por vocês?',
+      'Quem aprova antes de transmitir uma declaração ou gerar uma guia?',
+      'Qual canal usamos para dúvidas e qual o tempo de resposta esperado?',
+      'Como querem receber o relatório de entrega do mês?'
+    ]},
+    { t:'Limites', qs:[
+      'Podemos transmitir as declarações ou apenas deixar prontas para vocês?',
+      'Em caso de divergência ou erro de competências anteriores, corrigimos ou só apontamos?'
+    ]}
+  ];
+  var CK_TRIB = ['Substituição tributária', 'Monofásico', 'DIFAL', 'Importação', 'Benefício fiscal'];
+  var CK_YN = [
+    ['ret', 'Tem retenções na prestação ou na tomada de serviços?'],
+    ['filiais', 'Tem filiais ou inscrições em outros estados e municípios?'],
+    ['parc', 'Tem parcelamentos, pendências ou histórico de fiscalização?'],
+    ['atraso', 'Os documentos costumam chegar atrasados ou incompletos?']
+  ];
+
+  var ckForm = document.getElementById('ck-form');
+  var CHEVRON = '<svg class="ck-chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+
+  function optGroup(name, options){
+    return '<span class="opt" role="radiogroup">' + options.map(function(o){
+      return '<label><input type="radio" name="' + name + '" value="' + o + '"><span>' + o + '</span></label>';
+    }).join('') + '</span>';
+  }
+
+  function renderChecklist(){
+    var html = CK_GROUPS.map(function(g, gi){
+      return '<details class="ck-group" data-group="' + gi + '"' + (gi === 0 ? ' open' : '') + '>' +
+        '<summary><span class="ck-num">' + g.n + '</span><span>' + g.title + '</span><span class="ck-done" data-done="' + gi + '"></span>' + CHEVRON + '</summary>' +
+        '<div class="ck-body">' +
+        g.items.map(function(item, ii){
+          return '<div class="ck-item"><p>' + item + '</p>' + optGroup('g' + gi + '_' + ii, CK_STATUS) + '</div>';
+        }).join('') +
+        '<label class="field"><span>Observações</span><textarea name="g' + gi + '_obs" rows="2"></textarea></label>' +
+        '</div></details>';
+    }).join('');
+    var qi = 0;
+    html += '<details class="ck-group" data-group="A"><summary><span class="ck-num">A</span><span>Particularidades do seu escritório</span><span class="ck-done" data-done="A"></span>' + CHEVRON + '</summary><div class="ck-body">' +
+      CK_PART_A.map(function(sec){
+        return '<p class="ck-sub">' + sec.t + '</p>' + sec.qs.map(function(q){
+          var name = 'a_' + (qi++);
+          return '<label class="field"><span>' + q + '</span><textarea name="' + name + '" rows="2"></textarea></label>';
+        }).join('');
+      }).join('') + '</div></details>';
+    document.getElementById('ck-groups').innerHTML = html;
+  }
+
+  var clientSeq = 0;
+  function addClient(){
+    var id = ++clientSeq;
+    var el = document.createElement('div');
+    el.className = 'ck-client';
+    el.setAttribute('data-client', id);
+    el.innerHTML =
+      '<div class="ck-client-head"><b>Cliente</b><button type="button" class="ck-remove">Remover</button></div>' +
+      '<label class="field"><span>Empresa (razão social ou CNPJ)</span><input name="c' + id + '_nome"></label>' +
+      '<label class="field"><span>Tem algo fora do padrão nessa empresa?</span><textarea name="c' + id + '_fora" rows="2"></textarea></label>' +
+      '<div class="field"><span>Opera com:</span><div class="chips-in">' + CK_TRIB.map(function(t){
+        return '<label><input type="checkbox" name="c' + id + '_trib" value="' + t + '"><span>' + t + '</span></label>';
+      }).join('') + '</div></div>' +
+      CK_YN.map(function(q){
+        return '<div class="yn"><p>' + q[1] + '</p>' + optGroup('c' + id + '_' + q[0], ['Sim', 'Não']) + '</div>';
+      }).join('') +
+      '<label class="field"><span>No DP: dia de pagamento, comissões, horas extras, sindicato, quem envia o ponto?</span><textarea name="c' + id + '_dp" rows="2"></textarea></label>' +
+      '<label class="field"><span>Tem algum acordo especial com o cliente, como prazo diferenciado ou relatório extra?</span><textarea name="c' + id + '_acordo" rows="2"></textarea></label>';
+    el.querySelector('.ck-remove').addEventListener('click', function(){ el.remove(); saveDraft(); updateProgress(); });
+    document.getElementById('ck-clients').appendChild(el);
+    return id;
+  }
+
+  function value(name){
+    var el = ckForm.elements[name];
+    if (!el) return '';
+    if (el.length !== undefined && !el.tagName) {
+      var checked = [].filter.call(el, function(x){ return x.checked; }).map(function(x){ return x.value; });
+      return el[0] && el[0].type === 'checkbox' ? checked.join(', ') : (checked[0] || '');
+    }
+    if (el.type === 'checkbox') return el.checked ? el.value : '';
+    return (el.value || '').trim();
+  }
+
+  function updateProgress(){
+    var total = 0, done = 0;
+    ['escritorio', 'responsavel', 'email'].forEach(function(n){ total++; if (value(n)) done++; });
+    CK_GROUPS.forEach(function(g, gi){
+      var d = 0;
+      g.items.forEach(function(_, ii){ if (value('g' + gi + '_' + ii)) d++; });
+      total += g.items.length; done += d;
+      ckForm.querySelector('[data-done="' + gi + '"]').textContent = d + '/' + g.items.length;
+    });
+    var aTotal = 0, aDone = 0;
+    CK_PART_A.forEach(function(sec){ sec.qs.forEach(function(){ if (value('a_' + aTotal)) aDone++; aTotal++; }); });
+    total += aTotal; done += aDone;
+    ckForm.querySelector('[data-done="A"]').textContent = aDone + '/' + aTotal;
+    document.getElementById('ck-count').textContent = done + ' de ' + total;
+    document.getElementById('ck-bar').style.width = (done / total * 100) + '%';
+  }
+
+  function saveDraft(){
+    var data = { clients: [], fields: {} };
+    ckForm.querySelectorAll('[data-client]').forEach(function(c){ data.clients.push(c.getAttribute('data-client')); });
+    [].forEach.call(ckForm.elements, function(el){
+      if (!el.name || el.name === '_honey') return;
+      if (el.type === 'radio' || el.type === 'checkbox') { if (el.checked) (data.fields[el.name] = data.fields[el.name] || []).push(el.value); }
+      else if (el.value) data.fields[el.name] = el.value;
+    });
+    try { localStorage.setItem(CK_DRAFT_KEY, JSON.stringify(data)); } catch(e) {}
+  }
+
+  function restoreDraft(){
+    var data = null;
+    try { data = JSON.parse(localStorage.getItem(CK_DRAFT_KEY) || 'null'); } catch(e) {}
+    if (!data || !data.fields) return false;
+    (data.clients || []).forEach(function(oldId){
+      var id = addClient();
+      // client field names carry their id; map saved ids onto the new ones
+      Object.keys(data.fields).forEach(function(k){
+        var m = k.match(/^c(\d+)_(.+)$/);
+        if (m && m[1] === String(oldId)) { data.fields['c' + id + '_' + m[2]] = data.fields[k]; if (String(id) !== m[1]) delete data.fields[k]; }
+      });
+    });
+    [].forEach.call(ckForm.elements, function(el){
+      var v = data.fields[el.name];
+      if (v === undefined) return;
+      if (el.type === 'radio' || el.type === 'checkbox') el.checked = [].concat(v).indexOf(el.value) !== -1;
+      else el.value = v;
+    });
+    return (data.clients || []).length > 0;
+  }
+
+  function collectAnswers(){
+    var out = {};
+    out['Escritório'] = value('escritorio');
+    out['Responsável'] = value('responsavel');
+    out['email'] = value('email');
+    out['WhatsApp'] = value('whatsapp') || '-';
+    CK_GROUPS.forEach(function(g, gi){
+      g.items.forEach(function(item, ii){ out[g.n + '.' + (ii + 1) + ' ' + item] = value('g' + gi + '_' + ii) || 'Sem resposta'; });
+      out[g.n + ' Observações (' + g.title + ')'] = value('g' + gi + '_obs') || '-';
+    });
+    var qi = 0;
+    CK_PART_A.forEach(function(sec){ sec.qs.forEach(function(q){ out['A. ' + q] = value('a_' + (qi++)) || '-'; }); });
+    var k = 0;
+    ckForm.querySelectorAll('[data-client]').forEach(function(c){
+      var id = c.getAttribute('data-client'), p = 'B' + (++k) + ' ';
+      out[p + 'Empresa'] = value('c' + id + '_nome') || '(sem nome)';
+      out[p + 'Fora do padrão'] = value('c' + id + '_fora') || '-';
+      out[p + 'Opera com'] = value('c' + id + '_trib') || '-';
+      CK_YN.forEach(function(q){ out[p + q[1]] = value('c' + id + '_' + q[0]) || '-'; });
+      out[p + 'DP'] = value('c' + id + '_dp') || '-';
+      out[p + 'Acordo especial'] = value('c' + id + '_acordo') || '-';
+    });
+    return out;
+  }
+
+  function answersAsText(answers){
+    return Object.keys(answers).map(function(k){ return k + ': ' + answers[k]; }).join('\n');
+  }
+
+  if (ckForm) {
+    renderChecklist();
+    if (!restoreDraft()) addClient();
+    updateProgress();
+    var draftTimer;
+    ckForm.addEventListener('input', function(e){
+      if (e.target.getAttribute('aria-invalid')) e.target.removeAttribute('aria-invalid');
+      clearTimeout(draftTimer); draftTimer = setTimeout(saveDraft, 400);
+      updateProgress();
+    });
+    document.getElementById('ck-add-client').addEventListener('click', function(){
+      var id = addClient();
+      ckForm.elements['c' + id + '_nome'].focus();
+      saveDraft();
+    });
+
+    ckForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      var status = document.getElementById('ck-status');
+      var send = document.getElementById('ck-send');
+      var missing = ['escritorio', 'responsavel', 'email'].filter(function(n){
+        var el = ckForm.elements[n];
+        var bad = !el.value.trim() || (n === 'email' && !el.checkValidity());
+        if (bad) el.setAttribute('aria-invalid', 'true');
+        return bad;
+      });
+      if (missing.length) {
+        status.className = 'ck-status err';
+        status.textContent = 'Preencha o nome do escritório, o responsável e um e-mail válido.';
+        ckForm.elements[missing[0]].focus();
+        return;
+      }
+      if (ckForm.elements._honey.value) return;
+
+      var answers = collectAnswers();
+      var payload = {};
+      payload._subject = 'Checklist de início: ' + answers['Escritório'];
+      payload._template = 'table';
+      payload._captcha = 'false';
+      Object.keys(answers).forEach(function(k){ payload[k] = answers[k]; });
+
+      send.disabled = true;
+      status.className = 'ck-status';
+      status.textContent = 'Enviando...';
+      fetch(CK_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(function(r){ return r.json(); }).then(function(res){
+        if (String(res.success) !== 'true') throw new Error(res.message || 'falha');
+        status.className = 'ck-status ok';
+        status.textContent = 'Checklist enviado! Nossa equipe vai analisar e retornar pelo seu e-mail ou WhatsApp.';
+        try { localStorage.removeItem(CK_DRAFT_KEY); } catch(err) {}
+      }).catch(function(){
+        status.className = 'ck-status err';
+        status.innerHTML = 'Não foi possível enviar agora. Suas respostas continuam salvas: tente de novo em instantes ou <a href="#" id="ck-copy">copie as respostas</a> e envie para contato@atalaiagestao.com.';
+        document.getElementById('ck-copy').addEventListener('click', function(ev){
+          ev.preventDefault();
+          if (navigator.clipboard) navigator.clipboard.writeText(answersAsText(answers)).then(function(){ ev.target.textContent = 'respostas copiadas'; });
+        });
+      }).then(function(){ send.disabled = false; });
     });
   }
 
