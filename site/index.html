@@ -630,6 +630,7 @@
   .ck-code{ display:inline-block; min-width:40px; font-family:'Lexend Giga',sans-serif; font-size:.68rem; letter-spacing:.06em; color: var(--steel-deep); }
   .ck-detail{ margin:0 0 16px; padding:4px 18px 18px; border-left:3px solid var(--steel); border-radius:0 12px 12px 0; background: var(--mist); }
   .ck-detail[data-show="Pendente"]{ border-left-color:#B7791F; }
+  .ck-detail.ck-missing{ border-left-color:#B42318; box-shadow: inset 0 0 0 1px rgba(180,35,24,.35); }
   .ck-detail .field input, .ck-detail .field textarea, .ck-detail .field select{ background:#fff; }
   .ck-detail .ck-drop{ background:#fff; }
   .ck-client .ck-detail{ margin:0 0 8px; padding:0 14px 12px; }
@@ -1828,6 +1829,7 @@
             var v = fld.type === 'file' ? filesFor(base + '__' + fld.k).join(', ') : value(base + '__' + fld.k);
             if (v) parts.push(fld.type === 'file' ? 'Anexo: ' + v : fld.l.replace(/[?:]$/, '') + ': ' + v);
           });
+          if (parts.length === 1) parts[0] = 'Pronto (sem detalhes)';
         } else if (status === 'Pendente' && value(base + '__falta')) {
           parts.push('Falta: ' + value(base + '__falta'));
         }
@@ -1884,6 +1886,8 @@
     ckForm.addEventListener('input', function(e){
       if (e.target.getAttribute('aria-invalid')) e.target.removeAttribute('aria-invalid');
       if (e.target.type === 'radio') syncDetails();
+      var detail = e.target.closest ? e.target.closest('.ck-detail') : null;
+      if (detail) detail.classList.remove('ck-missing');
       clearTimeout(draftTimer); draftTimer = setTimeout(saveDraft, 400);
       updateProgress();
     });
@@ -1944,6 +1948,32 @@
       if (filesSize() > CK_FILES_MAX) {
         status.className = 'ck-status err';
         status.textContent = 'Os anexos passam de 4 MB. Remova alguns ou envie o link de uma pasta compartilhada.';
+        return;
+      }
+      // an item marked Pronto with nothing filled in tells the team nothing: point it out once
+      var empty = [];
+      CK_GROUPS.forEach(function(g, gi){
+        g.items.forEach(function(item, ii){
+          var base = 'g' + gi + '_' + ii;
+          if (value(base) !== 'Pronto') return;
+          var filled = item.f.some(function(fld){ return fld.type === 'file' ? filesFor(base + '__' + fld.k).length : value(base + '__' + fld.k); });
+          if (!filled) empty.push({ code: g.n + '.' + (ii + 1), group: gi });
+        });
+      });
+      if (empty.length && !ckForm.getAttribute('data-warned')) {
+        ckForm.setAttribute('data-warned', '1');
+        ckForm.querySelectorAll('.ck-detail.ck-missing').forEach(function(d){ d.classList.remove('ck-missing'); });
+        empty.forEach(function(x){
+          var g = ckForm.querySelector('[data-group="' + x.group + '"]');
+          if (g) g.open = true;
+          var parts = x.code.split('.');
+          var d = ckForm.querySelector('.ck-detail[data-for="g' + x.group + '_' + (parts[1] - 1) + '"][data-show="Pronto"]');
+          if (d) d.classList.add('ck-missing');
+        });
+        status.className = 'ck-status err';
+        status.textContent = 'Os itens ' + empty.map(function(x){ return x.code; }).join(', ') + ' estão como Pronto, mas sem nenhum detalhe. Complete-os, ou clique em Enviar de novo para mandar assim mesmo.';
+        var first = ckForm.querySelector('.ck-missing');
+        if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
         return;
       }
 
