@@ -636,6 +636,12 @@
   .ck-client .ck-detail{ margin:0 0 8px; padding:0 14px 12px; }
   @media (min-width:640px){ .field-wide{ grid-column: 1 / -1; } }
   .ck-drop-sm{ justify-content:flex-start; padding:14px 16px; margin-top:8px; }
+  .ck-attach-wrap{ margin-top:10px; }
+  .ck-attach{ position:relative; display:inline-flex; align-items:center; gap:8px; padding:8px 14px; font-size:.86rem; font-weight:500; color: var(--steel-deep); background:#fff; border:1px dashed rgba(86,119,126,.6); border-radius:999px; cursor:pointer; transition: background .2s ease, border-color .2s ease; }
+  .ck-attach:hover, .ck-attach.over{ background: rgba(86,119,126,.08); border-color: var(--steel); }
+  .ck-attach input{ position:absolute; inset:0; opacity:0; cursor:pointer; }
+  .ck-attach:focus-within{ outline:2px solid var(--steel); outline-offset:2px; }
+  .ck-attach svg{ width:15px; height:15px; }
   .ck-files-total{ margin:0; font-size:.85rem; color: var(--ink-soft); }
   .ck-files-total.over{ color:#B42318; }
   .ck-remove{ font:inherit; font-size:.82rem; color: var(--ink-soft); background:none; border:0; cursor:pointer; text-decoration:underline; }
@@ -1618,13 +1624,30 @@
       '<ul class="ck-files" data-list="' + slot + '"></ul></div>';
   }
 
+  // compact attach button, for answers where a file is optional
+  function attachBtn(slot){
+    return '<div class="field field-wide ck-attach-wrap">' +
+      '<label class="ck-attach" data-drop="' + slot + '"><input type="file" multiple data-slot="' + slot + '">' + CLIP + '<span>Anexar arquivo</span></label>' +
+      '<ul class="ck-files" data-list="' + slot + '"></ul></div>';
+  }
+
+  // every item takes both a written answer and an attachment
+  CK_GROUPS.forEach(function(g){
+    g.items.forEach(function(item){
+      var hasFile = item.f.some(function(x){ return x.type === 'file'; });
+      var hasText = item.f.some(function(x){ return x.type === 'area' || x.type === 'text'; });
+      if (!hasText) item.f.push({ k:'obs', type:'area', l:'Observações' });
+      if (!hasFile) item.f.push({ k:'arquivo', type:'file', l:'Anexar arquivo', compact:true });
+    });
+  });
+
   function passField(name, label){
     return '<div class="field"><span>' + label + '</span><span class="pw"><input name="' + name + '" type="password" autocomplete="new-password" data-secret aria-label="' + label + '"><button type="button" class="pw-toggle">Mostrar</button></span></div>';
   }
 
   function fieldHtml(base, fld){
     var name = base + '__' + fld.k;
-    if (fld.type === 'file') return dropZone(base + '__' + fld.k, fld.l);
+    if (fld.type === 'file') return fld.compact ? attachBtn(name) : dropZone(name, fld.l);
     if (fld.type === 'pass') return passField(name, fld.l);
     if (fld.type === 'area') return '<label class="field field-wide"><span>' + fld.l + '</span><textarea name="' + name + '" rows="2"></textarea></label>';
     if (fld.type === 'select') return '<label class="field"><span>' + fld.l + '</span><select name="' + name + '"><option value="">Selecione</option>' + fld.opts.map(function(o){ return '<option>' + o + '</option>'; }).join('') + '</select></label>';
@@ -1641,7 +1664,7 @@
           return '<div class="ck-item-wrap">' +
             '<div class="ck-item"><p><span class="ck-code">' + g.n + '.' + (ii + 1) + '</span>' + item.t + '</p>' + optGroup(base, CK_STATUS) + '</div>' +
             '<div class="ck-detail" data-for="' + base + '" data-show="Pronto" hidden><div class="grid-2">' + item.f.map(function(fld){ return fieldHtml(base, fld); }).join('') + '</div></div>' +
-            '<div class="ck-detail" data-for="' + base + '" data-show="Pendente" hidden><label class="field"><span>O que falta e qual a previsão?</span><input name="' + base + '__falta"></label></div>' +
+            '<div class="ck-detail" data-for="' + base + '" data-show="Pendente" hidden><div class="grid-2"><label class="field field-wide"><span>O que falta e qual a previsão?</span><input name="' + base + '__falta"></label>' + attachBtn(base + '__falta_arq') + '</div></div>' +
             '</div>';
         }).join('') +
         '<label class="field"><span>Observações sobre este bloco</span><textarea name="g' + gi + '_obs" rows="2"></textarea></label>' +
@@ -1653,7 +1676,8 @@
       '<details class="ck-group" data-group="A"><summary><span class="ck-num">A</span><span>Particularidades do seu escritório</span><span class="ck-done" data-done="A"></span>' + CHEVRON + '</summary><div class="ck-body">' +
       CK_PART_A.map(function(sec){
         return '<p class="ck-sub">' + sec.t + '</p>' + sec.qs.map(function(q){
-          return '<label class="field"><span>' + q + '</span><textarea name="a_' + (qi++) + '" rows="2"></textarea></label>';
+          var name = 'a_' + (qi++);
+          return '<label class="field"><span>' + q + '</span><textarea name="' + name + '" rows="2"></textarea></label>' + attachBtn(name + '_arq');
         }).join('');
       }).join('') + '</div></details>';
   }
@@ -1682,8 +1706,9 @@
           '<div class="ck-detail" data-for="c' + id + '_' + q[0] + '" data-show="Sim" hidden><label class="field"><span>Detalhe</span><input name="c' + id + '_' + q[0] + '_det"></label></div>';
       }).join('') +
       '<label class="field"><span>No DP: dia de pagamento, comissões, horas extras, sindicato, quem envia o ponto?</span><textarea name="c' + id + '_dp" rows="2"></textarea></label>' +
-      '<label class="field"><span>Tem algum acordo especial com o cliente, como prazo diferenciado ou relatório extra?</span><textarea name="c' + id + '_acordo" rows="2"></textarea></label>';
-    el.querySelector('.ck-remove').addEventListener('click', function(){ el.remove(); saveDraft(); updateProgress(); });
+      '<label class="field"><span>Tem algum acordo especial com o cliente, como prazo diferenciado ou relatório extra?</span><textarea name="c' + id + '_acordo" rows="2"></textarea></label>' +
+      attachBtn('c' + id + '_arq');
+    el.querySelector('.ck-remove').addEventListener('click', function(){ dropFiles('c' + id + '_'); el.remove(); saveDraft(); updateProgress(); });
     document.getElementById('ck-clients').appendChild(el);
     return id;
   }
@@ -1703,8 +1728,9 @@
       '<label class="field"><span>Usuário / login</span><input name="' + p + 'usuario" autocomplete="off"></label>' +
       passField(p + 'senha', 'Senha') +
       '<label class="field"><span>Observação</span><input name="' + p + 'obs"></label>' +
+      attachBtn(p + 'arq') +
       '</div>';
-    el.querySelector('.ck-remove').addEventListener('click', function(){ el.remove(); saveDraft(); });
+    el.querySelector('.ck-remove').addEventListener('click', function(){ dropFiles(p); el.remove(); saveDraft(); });
     document.getElementById('ck-access').appendChild(el);
     return id;
   }
@@ -1721,12 +1747,25 @@
   }
 
   // ---- attachments: one list per item slot, all sent together in a second, multipart submission
-  var ckFiles = []; // { slot, label, file }
+  var ckFiles = []; // { slot, file }
   function filesSize(){ return ckFiles.reduce(function(sum, x){ return sum + x.file.size; }, 0); }
   function formatSize(b){ return b < 1024 * 1024 ? Math.max(1, Math.round(b / 1024)) + ' KB' : (b / 1024 / 1024).toFixed(1).replace('.', ',') + ' MB'; }
   function slotLabel(slot){
     var m = slot.match(/^g(\d+)_(\d+)__/);
-    return m ? CK_GROUPS[m[1]].n + '.' + (+m[2] + 1) : 'Outros';
+    if (m) return CK_GROUPS[m[1]].n + '.' + (+m[2] + 1);
+    m = slot.match(/^a_(\d+)_/);
+    if (m) return 'A.' + (+m[1] + 1);
+    m = slot.match(/^c(\d+)_/);
+    if (m) {
+      var name = ckForm.elements['c' + m[1] + '_nome'];
+      return 'B ' + ((name && name.value.trim()) || 'cliente');
+    }
+    if (/^x\d+_/.test(slot)) return '05';
+    return 'Outros';
+  }
+  function dropFiles(prefix){
+    ckFiles = ckFiles.filter(function(x){ return x.slot.indexOf(prefix) !== 0; });
+    renderFiles();
   }
   function renderFiles(){
     ckForm.querySelectorAll('[data-list]').forEach(function(list){
@@ -1754,7 +1793,7 @@
   function addFiles(fileList, slot){
     [].forEach.call(fileList, function(f){
       var dup = ckFiles.some(function(x){ return x.slot === slot && x.file.name === f.name && x.file.size === f.size; });
-      if (!dup) ckFiles.push({ slot: slot, label: slotLabel(slot), file: f });
+      if (!dup) ckFiles.push({ slot: slot, file: f });
     });
     renderFiles();
   }
@@ -1830,8 +1869,9 @@
             if (v) parts.push(fld.type === 'file' ? 'Anexo: ' + v : fld.l.replace(/[?:]$/, '') + ': ' + v);
           });
           if (parts.length === 1) parts[0] = 'Pronto (sem detalhes)';
-        } else if (status === 'Pendente' && value(base + '__falta')) {
-          parts.push('Falta: ' + value(base + '__falta'));
+        } else if (status === 'Pendente') {
+          if (value(base + '__falta')) parts.push('Falta: ' + value(base + '__falta'));
+          if (filesFor(base + '__falta_arq').length) parts.push('Anexo: ' + filesFor(base + '__falta_arq').join(', '));
         }
         out[g.n + '.' + (ii + 1) + ' ' + item.t] = parts.join(' | ');
       });
@@ -1843,16 +1883,22 @@
       var parts = [['Endereço', 'url'], ['Usuário', 'usuario'], ['Senha', 'senha'], ['Obs', 'obs']]
         .filter(function(f){ return value(p + f[1]); })
         .map(function(f){ return f[0] + ': ' + value(p + f[1]); });
+      if (filesFor(p + 'arq').length) parts.push('Anexo: ' + filesFor(p + 'arq').join(', '));
       if (!parts.length) return;
       out['05.' + (++n) + ' ' + value(p + 'tipo') + ' (' + (value(p + 'empresa') || 'sem empresa') + ')'] = parts.join(' | ');
     });
     if (!n) out['05 Outros acessos'] = 'Nenhum informado';
     var qi = 0;
-    CK_PART_A.forEach(function(sec){ sec.qs.forEach(function(q){ out['A. ' + q] = value('a_' + (qi++)) || '-'; }); });
+    CK_PART_A.forEach(function(sec){
+      sec.qs.forEach(function(q){
+        var name = 'a_' + (qi++), files = filesFor(name + '_arq');
+        out['A. ' + q] = (value(name) || '-') + (files.length ? ' | Anexo: ' + files.join(', ') : '');
+      });
+    });
     var k = 0;
     ckForm.querySelectorAll('[data-client]').forEach(function(c){
       var id = c.getAttribute('data-client'), p = 'B' + (++k) + ' ';
-      if (!value('c' + id + '_nome') && !value('c' + id + '_fora')) return;
+      if (!value('c' + id + '_nome') && !value('c' + id + '_fora') && !filesFor('c' + id + '_arq').length) return;
       out[p + 'Empresa'] = value('c' + id + '_nome') || '(sem nome)';
       out[p + 'Fora do padrão'] = value('c' + id + '_fora') || '-';
       out[p + 'Opera com'] = value('c' + id + '_trib') || '-';
@@ -1862,10 +1908,11 @@
       });
       out[p + 'DP'] = value('c' + id + '_dp') || '-';
       out[p + 'Acordo especial'] = value('c' + id + '_acordo') || '-';
+      if (filesFor('c' + id + '_arq').length) out[p + 'Anexos'] = filesFor('c' + id + '_arq').join(', ');
     });
     out['C. Outros documentos'] = filesFor('docs').join(', ') || '-';
     out['C. Link de pasta compartilhada'] = value('pasta_link') || '-';
-    out['Anexos enviados (chegam em um e-mail separado)'] = ckFiles.length ? ckFiles.map(function(x){ return x.label + ': ' + x.file.name; }).join(', ') : 'Nenhum';
+    out['Anexos enviados (chegam em um e-mail separado)'] = ckFiles.length ? ckFiles.map(function(x){ return slotLabel(x.slot) + ': ' + x.file.name; }).join(', ') : 'Nenhum';
     return out;
   }
 
@@ -2003,7 +2050,7 @@
         fd.append('Referente a', payload._subject);
         fd.append('Escritório', answers['Escritório']);
         fd.append('email', answers.email);
-        ckFiles.forEach(function(x, i){ fd.append('anexo_' + (i + 1), x.file, x.label + ' - ' + x.file.name); });
+        ckFiles.forEach(function(x, i){ fd.append('anexo_' + (i + 1), x.file, slotLabel(x.slot) + ' - ' + x.file.name); });
         return fetch(CK_FILES_ENDPOINT, { method: 'POST', mode: 'no-cors', body: fd }).then(function(){
           var n = ckFiles.length;
           ckFiles = []; renderFiles();
