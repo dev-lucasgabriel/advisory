@@ -1469,6 +1469,7 @@
   if (segButtons.length) renderProposal();
 
   // ---------------- checklist: answers go by e-mail to contato@atalaiagestao.com
+  var CK_OWN_ENDPOINT = '/api/checklist';
   var CK_ENDPOINT = 'https://formsubmit.co/ajax/contato@atalaiagestao.com';
   var CK_FILES_ENDPOINT = 'https://formsubmit.co/contato@atalaiagestao.com';
   var CK_FILES_MAX = 4 * 1024 * 1024;
@@ -2031,17 +2032,29 @@
       payload._captcha = 'false';
       Object.keys(answers).forEach(function(k){ payload[k] = answers[k]; });
 
-      send.disabled = true;
-      status.className = 'ck-status';
-      status.textContent = 'Enviando...';
-      fetch(CK_ENDPOINT, {
+      function doneMessage(n){
+        return (n ? 'Checklist e ' + n + (n === 1 ? ' anexo enviados!' : ' anexos enviados!') : 'Checklist enviado!') +
+          ' Nossa equipe vai analisar e retornar pelo seu e-mail ou WhatsApp.';
+      }
+
+      // main route: the site's own endpoint emails answers and files together; resolves false when unavailable
+      function sendOwn(){
+        var fd = new FormData();
+        fd.append('answers', JSON.stringify(answers));
+        ckFiles.forEach(function(x){ fd.append('anexo', x.file, slotLabel(x.slot) + ' - ' + x.file.name); });
+        return fetch(CK_OWN_ENDPOINT, { method: 'POST', body: fd }).then(function(r){ return r.ok; }, function(){ return false; });
+      }
+
+      // fallback: FormSubmit, answers by AJAX and files through its regular endpoint
+      function sendFormSubmit(){
+      return fetch(CK_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(payload)
       }).then(function(r){ return r.json(); }).then(function(res){
         if (String(res.success) !== 'true') throw new Error(res.message || 'falha');
         try { localStorage.removeItem(CK_DRAFT_KEY); } catch(err) {}
-        if (!ckFiles.length) return 'Checklist enviado! Nossa equipe vai analisar e retornar pelo seu e-mail ou WhatsApp.';
+        if (!ckFiles.length) return doneMessage(0);
         // FormSubmit only takes attachments on its regular endpoint, which answers without CORS
         status.textContent = 'Checklist enviado. Enviando anexos...';
         var fd = new FormData();
@@ -2054,10 +2067,22 @@
         return fetch(CK_FILES_ENDPOINT, { method: 'POST', mode: 'no-cors', body: fd }).then(function(){
           var n = ckFiles.length;
           ckFiles = []; renderFiles();
-          return 'Checklist e ' + n + (n === 1 ? ' anexo enviados!' : ' anexos enviados!') + ' Nossa equipe vai analisar e retornar pelo seu e-mail ou WhatsApp.';
+          return doneMessage(n);
         }, function(){
           throw new Error('anexos');
         });
+      });
+      }
+
+      send.disabled = true;
+      status.className = 'ck-status';
+      status.textContent = 'Enviando...';
+      sendOwn().then(function(ok){
+        if (!ok) return sendFormSubmit();
+        var n = ckFiles.length;
+        try { localStorage.removeItem(CK_DRAFT_KEY); } catch(err) {}
+        ckFiles = []; renderFiles();
+        return doneMessage(n);
       }).then(function(msg){
         status.className = 'ck-status ok';
         status.textContent = msg;
